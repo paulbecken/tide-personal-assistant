@@ -20,10 +20,11 @@
       <div class="sidebar-card simple-tools">
         <div class="small-label">KEEP YOUR MIND CLEAR</div>
         <button id="dailyResetBtn"><span>☾</span><div><strong>Daily reset</strong><small>2 minutes tonight</small></div></button>
-        <button id="weeklyCleanupBtn"><span>↻</span><div><strong>Weekly cleanup</strong><small>Review what slipped</small></div></button>
+
       </div>
       <div class="profile"><div class="avatar">AK</div><div><strong>Your personal space</strong><span>One thing at a time</span></div><button>•••</button></div>
     </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <main>
       <header class="topbar">
@@ -37,18 +38,15 @@
           <div><p class="eyebrow">DAILY UPDATE · WEDNESDAY, AUGUST 19</p><h1>Good morning, <span>let’s keep it simple.</span></h1><p>Here’s what deserves your attention today.</p></div>
           <button class="primary" data-open-dump>＋ Dump a thought</button>
         </div>
-        <div class="next-card">
+        <div class="next-card" id="nextCard" role="button" tabindex="0">
           <div class="next-icon">→</div>
-          <div class="next-content"><div class="small-label">DO THIS NEXT</div><h2>Call Rohan about the campaign proposal</h2><p><span class="tag client">Buzz Media Fame</span><span>◷ 10:30 AM</span><span>♙ Rohan Mehta</span></p></div>
-          <button class="done-btn" data-complete-next>✓ Mark done</button>
-        </div>
-        <div class="priorities-block">
-          <div class="section-title"><div><h3>My three priorities</h3><small>Everything else can wait.</small></div><button id="editPriorities">Edit</button></div>
-          <div class="priority-grid" id="priorityGrid"></div>
+          <div class="next-content"><div class="small-label">DO THIS NEXT · TAP TO OPEN QUEUE</div><h2 id="nextTaskTitle">Call Rohan about the campaign proposal</h2><p id="nextTaskMeta"><span class="tag client">Work</span><span>◷ 10:30 AM</span></p></div>
+          <button class="queue-peek" id="openQueueBtn">☷ Up next</button>
+          <button class="done-btn" id="completeNextBtn">✓ Mark done</button>
         </div>
         <div class="grid-main">
           <div>
-            <div class="section-title"><h3>Everything else</h3><button id="openWeeklyFromToday">Weekly cleanup</button></div>
+            <div class="section-title"><h3>To Do List</h3><button id="addTaskTodayBtn">＋ Add task</button></div>
             <div class="timeline" id="todayTasks"></div>
           </div>
           <aside class="right-column">
@@ -76,7 +74,7 @@
           <div class="update-summary" id="updateSummary"></div>
           <div class="update-bottom">
             <div class="update-focus"><span>→</span><div><small id="focusLabel">FOCUS FOR NEXT WEEK</small><strong id="focusText">Follow up with 3 warm leads and close pending BMC files.</strong></div></div>
-            <button class="soft-btn" id="reviewUpdateBtn">Review unfinished items</button>
+
           </div>
         </div>
       </section>
@@ -132,7 +130,7 @@
 
       <section class="page" id="rules">
         <div class="page-head compact"><div><p class="eyebrow">YOUR PERSONAL OPERATING SYSTEM</p><h1>My <span>Rules</span></h1><p>A simple timetable and the promises you want to live by.</p></div><button class="primary" id="addRuleBtn">＋ Add a rule</button></div>
-        <div class="rules-banner"><div><span>◎</span></div><div><small>RULE OF THE DAY</small><h2>Protect the morning. Don’t open WhatsApp before your first priority is done.</h2></div><button id="newRuleOfDay">Show another</button></div>
+        <div class="rules-banner"><div><span>◎</span></div><div><small>RULE OF THE DAY</small><h2>Protect the morning. Don’t open WhatsApp before your first task is done.</h2></div><button id="newRuleOfDay">Show another</button></div>
         <div class="rules-tools"><button id="reminderSettingsBtn"><span>◉</span><div><strong>Connected reminders</strong><small>Rules that remind you automatically</small></div></button><button id="bmcTemplateBtn"><span>□</span><div><strong>BMC visit checklist</strong><small>Reusable before every visit</small></div></button><button id="mobileResetBtn"><span>☾</span><div><strong>Daily reset</strong><small>Clear today and plan tomorrow</small></div></button></div>
         <div class="rules-layout">
           <div>
