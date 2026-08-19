@@ -40,19 +40,14 @@
           <button class="primary" data-open-dump>＋ Dump a thought</button>
         </div>
         <div class="next-card" id="nextCard" role="button" tabindex="0">
+          <div class="hero-green" id="heroGreen"></div>
           <div class="next-icon">→</div>
-          <div class="next-content"><div class="small-label">DO THIS NEXT · TAP TO OPEN QUEUE</div><h2 id="nextTaskTitle">Call Rohan about the campaign proposal</h2><p id="nextTaskMeta"><span class="tag client">Work</span><span>◷ 10:30 AM</span></p></div>
-          <button class="queue-peek" id="openQueueBtn">☷ Up next</button>
-          <div class="swipe-complete" id="swipeComplete" aria-label="Swipe right to complete task">
-            <div class="swipe-fill" id="swipeFill"></div><span class="swipe-knob" id="swipeKnob">→</span><small>Swipe right</small><b>Complete</b>
-          </div>
+          <div class="next-content"><div class="small-label">TO DO LIST · <span id="todayTaskCount">5 TASKS TODAY</span></div><h2 id="nextTaskTitle">Call Rohan about the campaign proposal</h2><p id="nextTaskMeta"><span class="tag client">Work</span><span>◷ 10:30 AM</span></p></div>
+          <button class="queue-peek" id="openQueueBtn">☷ Open list</button>
+          <span class="swipe-hint">Swipe task →</span>
         </div>
-        <div class="grid-main">
-          <div>
-            <div class="section-title"><h3>To Do List</h3><button id="addTaskTodayBtn">＋ Add task</button></div>
-            <div class="timeline" id="todayTasks"></div>
-          </div>
-          <aside class="right-column">
+        <div class="grid-main support-only">
+          <aside class="right-column wide">
             <div class="mini-card meeting-card">
               <div class="section-title"><h3>Next meeting</h3><span class="live-label">IN 2H</span></div>
               <div class="meeting-time"><strong>12:30</strong><span>PM</span></div>
