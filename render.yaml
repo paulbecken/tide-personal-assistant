@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: tide-personal-assistant
+    runtime: static
+    buildCommand: echo "Tide static site ready"
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: true
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache, no-store, must-revalidate
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

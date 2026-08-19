@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tide — Your second brain</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">T</div><div><strong>Tide</strong><span>your second brain</span></div></div>
+      <nav id="nav">
+        <button class="nav-item active" data-tab="today"><span>⌂</span> Today</button>
+        <button class="nav-item" data-tab="dump"><span>✦</span> Brain Dump</button>
+        <button class="nav-item" data-tab="calendar"><span>□</span> Calendar</button>
+        <button class="nav-item" data-tab="people"><span>♙</span> People</button>
+        <button class="nav-item" data-tab="rules"><span>◎</span> My Rules</button>
+      </nav>
+      <div class="sidebar-card simple-tools">
+        <div class="small-label">KEEP YOUR MIND CLEAR</div>
+        <button id="dailyResetBtn"><span>☾</span><div><strong>Daily reset</strong><small>2 minutes tonight</small></div></button>
+        <button id="weeklyCleanupBtn"><span>↻</span><div><strong>Weekly cleanup</strong><small>Review what slipped</small></div></button>
+      </div>
+      <div class="profile"><div class="avatar">AK</div><div><strong>Your personal space</strong><span>One thing at a time</span></div><button>•••</button></div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu">☰</button>
+        <div class="date-pill"><span class="pulse"></span><span id="liveDate">Wednesday, 19 August</span></div>
+        <div class="top-actions"><button class="icon-btn" id="searchBtn">⌕</button><button class="icon-btn notification">♢<i></i></button><button class="primary small-add" data-open-dump>＋ Add something</button></div>
+      </header>
+
+      <section class="page active" id="today">
+        <div class="page-head">
+          <div><p class="eyebrow">DAILY UPDATE · WEDNESDAY, AUGUST 19</p><h1>Good morning, <span>let’s keep it simple.</span></h1><p>Here’s what deserves your attention today.</p></div>
+          <button class="primary" data-open-dump>＋ Dump a thought</button>
+        </div>
+        <div class="next-card">
+          <div class="next-icon">→</div>
+          <div class="next-content"><div class="small-label">DO THIS NEXT</div><h2>Call Rohan about the campaign proposal</h2><p><span class="tag client">Buzz Media Fame</span><span>◷ 10:30 AM</span><span>♙ Rohan Mehta</span></p></div>
+          <button class="done-btn" data-complete-next>✓ Mark done</button>
+        </div>
+        <div class="priorities-block">
+          <div class="section-title"><div><h3>My three priorities</h3><small>Everything else can wait.</small></div><button id="editPriorities">Edit</button></div>
+          <div class="priority-grid" id="priorityGrid"></div>
+        </div>
+        <div class="grid-main">
+          <div>
+            <div class="section-title"><h3>Everything else</h3><button id="openWeeklyFromToday">Weekly cleanup</button></div>
+            <div class="timeline" id="todayTasks"></div>
+          </div>
+          <aside class="right-column">
+            <div class="mini-card meeting-card">
+              <div class="section-title"><h3>Next meeting</h3><span class="live-label">IN 2H</span></div>
+              <div class="meeting-time"><strong>12:30</strong><span>PM</span></div>
+              <h4>Content strategy review</h4><p>with Cafe Monsoon team</p>
+              <div class="meeting-meta"><span>◉ Google Meet</span><span>45 min</span></div>
+              <button class="soft-btn" id="meetingFollowupBtn">Finish meeting & set next action</button>
+            </div>
+            <div class="mini-card focus-card">
+              <div class="section-title"><h3>Life rhythm</h3><button data-go-rules>Open rules →</button></div>
+              <div class="habit"><span class="habit-icon">☀</span><div><strong>Morning start</strong><small>Target 7:30 AM</small></div><b>✓</b></div>
+              <div class="habit"><span class="habit-icon">⌁</span><div><strong>Gym</strong><small>6:30 PM · Upper body</small></div><i></i></div>
+              <div class="habit"><span class="habit-icon">☾</span><div><strong>Wind down</strong><small>Start by 11:30 PM</small></div><i></i></div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="update-section">
+          <div class="update-head">
+            <div><p class="eyebrow" id="updateEyebrow">WEEKLY UPDATE</p><h2 id="updateTitle">Your week, without the noise.</h2><p id="updateSubtitle">A quick look at what moved and what needs attention next.</p></div>
+            <div class="update-switch"><button class="active" data-update-view="week">Weekly</button><button data-update-view="month">Monthly</button></div>
+          </div>
+          <div class="update-summary" id="updateSummary"></div>
+          <div class="update-bottom">
+            <div class="update-focus"><span>→</span><div><small id="focusLabel">FOCUS FOR NEXT WEEK</small><strong id="focusText">Follow up with 3 warm leads and close pending BMC files.</strong></div></div>
+            <button class="soft-btn" id="reviewUpdateBtn">Review unfinished items</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="dump">
+        <div class="page-head compact"><div><p class="eyebrow">NO FORMS. NO FRICTION.</p><h1>Brain <span>Dump</span></h1><p>Type or speak naturally. Tide automatically puts it in the right place.</p></div></div>
+        <div class="dump-hero">
+          <div class="dump-glow"></div><span class="spark">✦</span>
+          <textarea id="dumpInput" placeholder="What’s on your mind? Try “Meet Raj tomorrow at 4 PM”"></textarea>
+          <div class="dump-actions"><span>⌘ Press Ctrl + Enter to save</span><button id="voiceBtn" class="icon-btn" title="Speak instead">●</button><button class="primary" id="saveDump">Save thought →</button></div>
+        </div>
+        <div class="smart-row"><span>Quick ideas:</span><button class="prompt">Call a client tomorrow</button><button class="prompt">Assign work to intern</button><button class="prompt">BMC visit on Friday</button><button class="prompt">Gym at 6:30 PM</button></div>
+        <div class="section-title spaced"><h3>Your recent thoughts</h3><span id="thoughtCount">4 items</span></div>
+        <div class="thought-list" id="thoughtList"></div>
+
+        <div class="manual-entry">
+          <div class="manual-entry-head"><div><p class="eyebrow">WHEN YOU WANT MORE CONTROL</p><h3>Add details manually</h3><p>Add a task, meeting or client work with complete information.</p></div><button class="soft-btn" id="toggleManualForm">＋ Add detailed item</button></div>
+          <form id="manualTaskForm" class="manual-form">
+            <div class="manual-grid">
+              <div class="form-field"><label>ITEM TYPE</label><select id="manualType"><option>Task</option><option>Meeting</option><option>Client follow-up</option><option>BMC work</option><option>Team task</option><option>Personal</option></select></div>
+              <div class="form-field wide"><label>TASK / MEETING NAME *</label><input id="manualTitle" placeholder="e.g. Website strategy meeting"></div>
+              <div class="form-field"><label>CLIENT NAME</label><input id="manualClient" placeholder="e.g. Rohan Mehta"></div>
+              <div class="form-field"><label>SERVICE DELIVERED</label><input id="manualService" placeholder="e.g. Social media management"></div>
+              <div class="form-field"><label>DATE *</label><input id="manualDate" type="date"></div>
+              <div class="form-field"><label>TIME</label><input id="manualTime" type="time"></div>
+              <div class="form-field"><label>ASSIGN TO</label><select id="manualAssignee"><option>Myself</option><option>Aman Shaikh</option><option>Sahil Patil</option><option>Other team member</option></select></div>
+              <div class="form-field wide"><label>NOTES / DELIVERABLE</label><input id="manualNotes" placeholder="What exactly needs to be done?"></div>
+            </div>
+            <div class="manual-form-foot"><span>It will automatically appear in Today, Calendar, or Team.</span><button type="submit" class="primary">Save item →</button></div>
+          </form>
+        </div>
+      </section>
+
+      <section class="page" id="calendar">
+        <div class="page-head compact"><div><p class="eyebrow">YOUR TIME, IN ONE PLACE</p><h1>Calendar</h1><p>Tasks, meetings, visits and client work with full details.</p></div><button class="primary" id="addMeetingBtn">＋ Schedule meeting</button></div>
+        <div class="calendar-update-tabs"><button class="active" data-calendar-view="daily">Daily Update</button><button data-calendar-view="weekly">Weekly Update</button><button data-calendar-view="monthly">Monthly Update</button></div>
+        <div class="calendar-layout" id="dailyCalendarView">
+          <div class="calendar-card">
+            <div class="cal-head"><button id="prevWeek">‹</button><h3 id="calRange">17–23 August 2026</h3><button id="nextWeek">›</button><button class="today-btn" id="todayBtn">Today</button></div>
+            <div class="week" id="weekDays"></div>
+            <div class="agenda" id="agenda"></div>
+          </div>
+          <aside class="mini-card upcoming"><div class="section-title"><h3>Upcoming</h3><span>Tasks & meetings</span></div><div id="upcomingList"></div></aside>
+        </div>
+        <div class="calendar-overview" id="calendarOverview"></div>
+      </section>
+
+      <section class="page" id="people">
+        <div class="page-head compact"><div><p class="eyebrow">EVERYONE YOU WORK WITH</p><h1>People</h1><p>Clients, leads, interns and contacts—together.</p></div><button class="primary" id="addPersonBtn">＋ Add person</button></div>
+        <div class="filters"><button class="active" data-filter="all">Everyone</button><button data-filter="Client">Clients</button><button data-filter="Lead">Leads</button><button data-filter="Team">Team</button><div class="people-search">⌕ <input id="peopleSearch" placeholder="Search people" /></div></div>
+        <div class="people-grid" id="peopleGrid"></div>
+      </section>
+
+      <section class="page" id="rules">
+        <div class="page-head compact"><div><p class="eyebrow">YOUR PERSONAL OPERATING SYSTEM</p><h1>My <span>Rules</span></h1><p>A simple timetable and the promises you want to live by.</p></div><button class="primary" id="addRuleBtn">＋ Add a rule</button></div>
+        <div class="rules-banner"><div><span>◎</span></div><div><small>RULE OF THE DAY</small><h2>Protect the morning. Don’t open WhatsApp before your first priority is done.</h2></div><button id="newRuleOfDay">Show another</button></div>
+        <div class="rules-tools"><button id="reminderSettingsBtn"><span>◉</span><div><strong>Connected reminders</strong><small>Rules that remind you automatically</small></div></button><button id="bmcTemplateBtn"><span>□</span><div><strong>BMC visit checklist</strong><small>Reusable before every visit</small></div></button><button id="mobileResetBtn"><span>☾</span><div><strong>Daily reset</strong><small>Clear today and plan tomorrow</small></div></button></div>
+        <div class="rules-layout">
+          <div>
+            <div class="section-title"><h3>My timetable</h3><button id="editRoutine">Edit routine</button></div>
+            <div class="routine" id="routineList"></div>
+          </div>
+          <div>
+            <div class="section-title"><h3>Rules I live by</h3><span id="ruleCount"></span></div>
+            <div class="rules-list" id="rulesList"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="mobile-nav">
+      <button class="active" data-tab="today">⌂<span>Today</span></button><button data-tab="dump">✦<span>Dump</span></button><button class="mobile-plus" data-open-dump>＋</button><button data-tab="calendar">□<span>Calendar</span></button><button data-tab="rules">◎<span>Rules</span></button>
+    </nav>
+  </div>
+
+  <button class="voice-fab" id="globalVoice" aria-label="Speak a reminder"><span>●</span><b>Speak</b></button>
+  <div class="voice-overlay" id="voiceOverlay">
+    <div class="voice-sheet">
+      <button class="voice-close" id="voiceClose">×</button>
+      <div class="voice-orb" id="voiceOrb"><i></i><i></i><i></i><span>●</span></div>
+      <p class="eyebrow">LISTENING</p>
+      <h2 id="voiceStatus">What’s on your mind?</h2>
+      <p id="voiceHint">Speak naturally. I’ll organise it for you.</p>
+      <div class="voice-transcript" id="voiceTranscript">Try: “Meeting with Raj tomorrow at 4 PM”</div>
+      <div class="voice-result" id="voiceResult"></div>
+      <button class="primary voice-done" id="voiceDone">Done</button>
+    </div>
+  </div>
+  <div class="modal" id="modal"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div id="modalBody"></div></div></div>
+  <div class="toast" id="toast">Saved to your brain dump</div>
+  <script src="app.js"></script>
+</body>
+</html>

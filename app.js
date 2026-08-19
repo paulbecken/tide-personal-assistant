@@ -1,0 +1,182 @@
+const $=(s,p=document)=>p.querySelector(s), $$=(s,p=document)=>[...p.querySelectorAll(s)];
+const store={
+ get(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}},
+ set(k,v){localStorage.setItem(k,JSON.stringify(v))}
+};
+let tasks=store.get('tide_tasks',[
+ {time:'10:30 AM',title:'Call Rohan about campaign proposal',sub:'Follow-up · Buzz Media Fame',type:'Work',done:false},
+ {time:'12:30 PM',title:'Content strategy review',day:'Today',sub:'Meeting · Cafe Monsoon team',type:'Work',done:false},
+ {time:'2:15 PM',title:'Visit BMC — Ward office',sub:'Carry file #PL-284 and ID copy',type:'BMC',done:false},
+ {time:'4:30 PM',title:'Review reels submitted by Aman',sub:'Team · 5 videos waiting',type:'Team',done:false},
+ {time:'6:30 PM',title:'Gym — upper body',sub:'Personal · 60 minutes',type:'Personal',done:false}
+]);
+let thoughts=store.get('tide_thoughts',[
+ {text:'Follow up with Neha for pending payment',meta:'Follow-up · Tomorrow',icon:'↗'},
+ {text:'Ask Aman to prepare five reel concepts',meta:'Team task · Today',icon:'♙'},
+ {text:'Carry Aadhaar copy for BMC file',meta:'Reminder · Today 2:00 PM',icon:'□'},
+ {text:'Book dinner with college friends',meta:'Personal · This weekend',icon:'♡'}
+]);
+let people=[
+ {name:'Rohan Mehta',type:'Lead',note:'Interested in social media management.',next:'Follow up today',hot:true},
+ {name:'Aman Shaikh',type:'Team',note:'Intern · Video and reels',next:'2 tasks pending'},
+ {name:'Neha Kapoor',type:'Client',note:'Brand campaign · Payment follow-up',next:'Call tomorrow'},
+ {name:'Sahil Patil',type:'Team',note:'Intern · Content and research',next:'1 task pending'},
+ {name:'Mr. Deshmukh',type:'Client',note:'BMC plumbing file contact',next:'Visit Friday'},
+ {name:'Cafe Monsoon',type:'Client',note:'Social media and content strategy',next:'Meeting 12:30 PM'}
+];
+let priorities=store.get('tide_priorities',[
+ {text:'Call Rohan about the campaign proposal',done:false},
+ {text:'Complete BMC file visit',done:false},
+ {text:'Review intern submissions',done:false}
+]);
+let rules=store.get('tide_rules',[
+ 'No WhatsApp before my first important task is complete.',
+ 'If it takes less than two minutes, do it now.',
+ 'Never end a meeting without deciding the next step.',
+ 'Work ends at 8:30 PM unless it is genuinely urgent.',
+ 'One clean meal is better than a perfect plan tomorrow.'
+]);
+const routine=[
+ ['7:30','☀','Wake up','Water · No phone for 20 min'],['8:00','◎','Plan the day','Choose only 3 priorities'],['9:00','→','Deep work','Most important business task'],['1:30','♨','Lunch & reset','Clean meal · 20 min break'],['6:30','⌁','Gym / movement','60 minutes'],['10:45','☾','Slow down','Review day · Plan tomorrow'],['11:30','·','Phone away','Sleep target: 12:00 AM']
+];
+let meetings=store.get('tide_meetings',[
+ {time:'10:30 AM',title:'Call Rohan',day:'Today',sub:'Campaign proposal · Phone',kind:''},
+ {time:'12:30 PM',title:'Content strategy review',day:'Today',sub:'Cafe Monsoon · Google Meet',kind:''},
+ {time:'2:15 PM',title:'BMC Ward Office visit',day:'Today',sub:'File PL-284 · Andheri East',kind:'orange'},
+ {time:'5:00 PM',title:'Intern check-in',day:'Today',sub:'Office · 20 minutes',kind:''}
+]);
+function switchTab(id){
+ $$('.page').forEach(x=>x.classList.toggle('active',x.id===id));
+ $$('[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+$$('[data-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
+$$('[data-open-dump]').forEach(b=>b.onclick=()=>{switchTab('dump');setTimeout(()=>$('#dumpInput').focus(),100)});
+$('[data-go-rules]').onclick=()=>switchTab('rules');
+function renderTasks(){
+ $('#todayTasks').innerHTML=tasks.map((t,i)=>`<div class="task-row"><span class="task-time">${t.time}</span><button class="check ${t.done?'done':''}" data-task="${i}">${t.done?'✓':''}</button><div><h4 style="${t.done?'text-decoration:line-through;opacity:.55':''}">${escapeHtml(t.title)}</h4><p>${t.sub}${t.status?' · '+t.status:''}</p></div><span class="task-type">${t.type}</span><button class="task-more" data-task-more="${i}">•••</button></div>`).join('');
+ $$('[data-task]').forEach(b=>b.onclick=()=>{let i=+b.dataset.task;tasks[i].done=!tasks[i].done;store.set('tide_tasks',tasks);renderTasks();toast(tasks[i].done?'Nice. One less thing on your mind.':'Moved back to today')});
+ $$('[data-task-more]').forEach(b=>b.onclick=()=>openTaskActions(+b.dataset.task));
+}
+function renderPriorities(){
+ $('#priorityGrid').innerHTML=priorities.map((p,i)=>`<div class="priority-card ${p.done?'done':''}"><span>0${i+1}</span><p>${escapeHtml(p.text)}</p><button data-priority="${i}">${p.done?'✓':''}</button></div>`).join('');
+ $$('[data-priority]').forEach(b=>b.onclick=()=>{priorities[+b.dataset.priority].done=!priorities[+b.dataset.priority].done;store.set('tide_priorities',priorities);renderPriorities()});
+}
+function openTaskActions(i){
+ let t=tasks[i];$('#modalBody').innerHTML=`<h2>${escapeHtml(t.title)}</h2><p>${t.sub} · ${t.type}</p><div class="action-list"><button data-task-action="done">✓ Mark complete</button><button data-task-action="15">◷ Remind me in 15 minutes</button><button data-task-action="persistent">◉ Keep reminding until complete</button><button data-task-action="evening">☀ Move to this evening</button><button data-task-action="tomorrow">→ Move to tomorrow</button><button data-task-action="open">□ Open details</button><button class="danger" data-task-action="remove">× Remove this</button></div>`;$('#modal').classList.add('open');
+ $$('[data-task-action]').forEach(b=>b.onclick=()=>{let a=b.dataset.taskAction;if(a==='done'){t.done=true;finishTaskAction('Completed.')}else if(a==='15'){scheduleReminder(t,15);finishTaskAction('I’ll remind you again in 15 minutes.')}else if(a==='persistent'){t.persistent=true;finishTaskAction('This will stay active until you complete it.')}else if(a==='evening'){t.time='7:00 PM';finishTaskAction('Moved to this evening.')}else if(a==='tomorrow'){t.sub='Tomorrow · '+t.type;finishTaskAction('Moved to tomorrow.')}else if(a==='remove'){tasks.splice(i,1);finishTaskAction('Removed.')}else openTaskDetails(i)});
+}
+function finishTaskAction(msg){store.set('tide_tasks',tasks);renderTasks();$('#modal').classList.remove('open');toast(msg)}
+function scheduleReminder(t,minutes){if('Notification'in window&&Notification.permission==='granted')setTimeout(()=>new Notification('Tide reminder',{body:t.title}),Math.min(minutes*60000,2147483647));}
+function openTaskDetails(i){let t=tasks[i];if(t.type==='BMC')return openBmcChecklist(t);if(t.type==='Team')return openStaffTask(i);$('#modalBody').innerHTML=`<h2>${escapeHtml(t.title)}</h2><p>Keep the next action simple.</p><div class="summary-box"><strong>${t.type}</strong><br>${t.time} · ${t.sub}</div><div class="action-list"><button id="callAction">☎ Call person</button><button id="whatsappAction">◉ Open WhatsApp</button><button id="copyAction">□ Copy follow-up message</button></div>`;$('#callAction').onclick=()=>toast('Add the contact number in People to call.');$('#whatsappAction').onclick=()=>window.open('https://wa.me/?text='+encodeURIComponent('Hi, following up regarding '+t.title),'_blank');$('#copyAction').onclick=()=>{navigator.clipboard?.writeText('Hi, just following up regarding '+t.title+'. Please let me know the next step.');toast('Follow-up message copied.')};}
+function openStaffTask(i){let t=tasks[i];$('#modalBody').innerHTML=`<h2>${escapeHtml(t.title)}</h2><p>Only four simple stages.</p><div class="action-list">${['Assigned','In progress','Submitted','Approved'].map(s=>`<button data-status="${s}">${t.status===s?'✓ ':''}${s}</button>`).join('')}</div>`;$$('[data-status]').forEach(b=>b.onclick=()=>{t.status=b.dataset.status;store.set('tide_tasks',tasks);renderTasks();$('#modal').classList.remove('open');toast('Staff task updated → '+t.status)})}
+function renderThoughts(){
+ $('#thoughtCount').textContent=`${thoughts.length} items`;
+ $('#thoughtList').innerHTML=thoughts.map((t,i)=>`<div class="thought"><span class="thought-icon">${t.icon}</span><div><strong>${escapeHtml(t.text)}</strong><small>${t.meta}</small></div><button data-del-thought="${i}">×</button></div>`).join('')||'<div class="thought"><div><strong>Your mind is clear.</strong><small>Add anything that comes up.</small></div></div>';
+ $$('[data-del-thought]').forEach(b=>b.onclick=()=>{thoughts.splice(+b.dataset.delThought,1);store.set('tide_thoughts',thoughts);renderThoughts()});
+}
+function classify(text){let low=text.toLowerCase();if(/meet|meeting|appointment|schedule/.test(low))return ['Meeting','↗'];if(/intern|aman|sahil|assign|team|staff/.test(low))return ['Team task','♙'];if(/bmc|plumb|file|ward|municipal/.test(low))return ['BMC reminder','□'];if(/gym|workout|food|meal|dinner|sleep|wake|personal|doctor/.test(low))return ['Personal','♡'];if(/call|follow[ -]?up|client|payment|proposal|lead/.test(low))return ['Follow-up','↗'];return ['Task · Inbox','✦']}
+function getTime(text){
+ let m=text.match(/\b(?:at|by)\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b/i);if(!m)return 'Any time';
+ let h=+m[1],min=m[2]||'00',ap=(m[3]||'').toUpperCase();if(!ap)ap=h>=8&&h<=11?'AM':'PM';if(h>12)h-=12;return `${h}:${min} ${ap}`;
+}
+function getDay(text){let l=text.toLowerCase();if(l.includes('tomorrow'))return 'Tomorrow';if(l.includes('today'))return 'Today';let d=l.match(/\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/);return d?d[1][0].toUpperCase()+d[1].slice(1):'Today'}
+function routeCapture(text){
+ let [kind,icon]=classify(text),time=getTime(text),day=getDay(text),destination='Brain Dump';
+ thoughts.unshift({text,meta:`Just now · ${kind}`,icon});store.set('tide_thoughts',thoughts);renderThoughts();
+ if(kind==='Meeting'){
+   meetings.unshift({time,title:text,day,sub:`${day} · Added automatically`,kind:''});store.set('tide_meetings',meetings);renderCalendar(weekOffset);destination='Calendar';
+ }else if(kind!=='Task · Inbox'){
+   let type=kind==='Team task'?'Team':kind==='BMC reminder'?'BMC':kind==='Personal'?'Personal':'Work';
+   tasks.unshift({time,title:text,day,sub:`${day} · Added automatically`,type,done:false,status:type==='Team'?'Assigned':''});store.set('tide_tasks',tasks);renderTasks();destination='Today';
+ }
+ return {kind,time,day,destination};
+}
+function saveThought(){let input=$('#dumpInput'),text=input.value.trim();if(!text)return toast('Write anything first — even a few words.');let result=routeCapture(text);input.value='';toast(`Organised automatically → ${result.destination}`);}
+$('#saveDump').onclick=saveThought;$('#dumpInput').addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='Enter')saveThought()});
+$$('.prompt').forEach(b=>b.onclick=()=>{$('#dumpInput').value=b.textContent;$('#dumpInput').focus()});
+$('#toggleManualForm').onclick=()=>{let box=$('.manual-entry');box.classList.toggle('open');$('#toggleManualForm').textContent=box.classList.contains('open')?'− Hide form':'＋ Add detailed item';if(box.classList.contains('open'))setTimeout(()=>$('#manualTitle').focus(),80)};
+function dateLabel(value){if(!value)return'Today';let d=new Date(value+'T00:00:00'),now=new Date(),tom=new Date();tom.setDate(now.getDate()+1);if(d.toDateString()===now.toDateString())return'Today';if(d.toDateString()===tom.toDateString())return'Tomorrow';return d.toLocaleDateString('en-IN',{weekday:'long'})}
+$('#manualTaskForm').onsubmit=e=>{e.preventDefault();let itemType=$('#manualType').value,title=$('#manualTitle').value.trim(),date=$('#manualDate').value,timeValue=$('#manualTime').value;if(!title||!date)return toast('Add a name and date first.');let day=dateLabel(date),time=timeValue?new Date('2026-01-01T'+timeValue).toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'}):'Any time',client=$('#manualClient').value.trim(),service=$('#manualService').value.trim(),assignee=$('#manualAssignee').value,notes=$('#manualNotes').value.trim(),details={time,title,day,date,client,service,assignee,notes,sub:`${day} · ${itemType}`};
+ if(itemType==='Meeting'){meetings.unshift({...details,kind:''});store.set('tide_meetings',meetings)}else{let type=itemType==='BMC work'?'BMC':itemType==='Team task'?'Team':itemType==='Personal'?'Personal':'Work';tasks.unshift({...details,type,done:false,status:type==='Team'?'Assigned':''});store.set('tide_tasks',tasks);renderTasks()}
+ if(client&&!people.some(p=>p.name.toLowerCase()===client.toLowerCase())){people.unshift({name:client,type:'Client',note:service||'Added from detailed task',next:day+' · '+time});renderPeople()}
+ thoughts.unshift({text:title,meta:`Detailed ${itemType} · ${day}`,icon:itemType==='Meeting'?'↗':'□'});store.set('tide_thoughts',thoughts);renderThoughts();renderCalendar(weekOffset);e.target.reset();setManualDate();$('.manual-entry').classList.remove('open');$('#toggleManualForm').textContent='＋ Add detailed item';toast(`${itemType} saved with full details.`)};
+function setManualDate(){let d=new Date();$('#manualDate').value=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
+// Voice capture: speak naturally, then the app classifies and routes it without a form.
+let recognition=null,voiceSaved=false;
+function closeVoice(){if(recognition)try{recognition.stop()}catch{};$('#voiceOverlay').classList.remove('open')}
+function showVoiceResult(text){if(!text||voiceSaved)return;voiceSaved=true;$('#voiceTranscript').textContent=text;let r=routeCapture(text.trim());$('#voiceStatus').textContent='Done — I organised it';$('#voiceHint').textContent='No form or category selection needed.';$('#voiceResult').innerHTML=`<strong>Placed in ${r.destination}</strong><br>${r.kind} · ${r.day}${r.time!=='Any time'?' · '+r.time:''}`;$('#voiceResult').classList.add('show');$('.voice-done').style.display='block';toast(`Voice added → ${r.destination}`)}
+window.handleNativeVoice=showVoiceResult;window.handleNativeVoiceError=msg=>{$('#voiceStatus').textContent='I couldn’t hear that';$('#voiceTranscript').textContent=msg||'Please try speaking again.';$('.voice-done').style.display='block'};
+function openVoice(){
+ const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+ $('#voiceOverlay').classList.add('open');$('#voiceStatus').textContent='What’s on your mind?';$('#voiceHint').textContent='Speak naturally. I’ll organise it for you.';$('#voiceTranscript').textContent='Listening…';$('#voiceResult').classList.remove('show');$('.voice-done').style.display='none';voiceSaved=false;
+ if(window.AndroidVoice){window.AndroidVoice.startListening();return}
+ if(!SpeechRecognition){$('#voiceStatus').textContent='Voice is not supported here';$('#voiceTranscript').textContent='Open this app in Chrome or Edge, or type in Brain Dump.';$('.voice-done').style.display='block';return}
+ recognition=new SpeechRecognition();recognition.lang='en-IN';recognition.interimResults=true;recognition.continuous=false;
+ recognition.onresult=e=>{let final='',interim='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)final+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript}$('#voiceTranscript').textContent=final||interim;if(final)showVoiceResult(final)};
+ recognition.onerror=e=>{if(e.error==='not-allowed')$('#voiceTranscript').textContent='Please allow microphone access and try again.';else $('#voiceTranscript').textContent='I couldn’t hear that. Tap Speak and try again.';$('.voice-done').style.display='block'};
+ recognition.onend=()=>{if(!voiceSaved){$('#voiceStatus').textContent='I didn’t catch that';$('#voiceHint').textContent='Close and tap Speak to try once more.';$('.voice-done').style.display='block'}};
+ try{recognition.start()}catch{}
+}
+$('#voiceBtn').onclick=openVoice;$('#globalVoice').onclick=openVoice;$('#voiceClose').onclick=closeVoice;$('#voiceDone').onclick=closeVoice;
+function renderPeople(filter='all',query=''){let list=people.map((p,i)=>({...p,_i:i})).filter(p=>(filter==='all'||p.type===filter)&&p.name.toLowerCase().includes(query.toLowerCase()));$('#peopleGrid').innerHTML=list.map(p=>`<div class="person-card" data-person="${p._i}"><div class="person-top"><div class="person-avatar">${p.name.split(' ').map(x=>x[0]).slice(0,2).join('')}</div><div><h4>${p.name}</h4><span>${p.type}</span></div></div><p class="person-note">${p.note}</p><div class="person-foot"><span>Next follow-up</span><b>${p.next}</b></div></div>`).join('');$$('[data-person]').forEach(c=>c.onclick=()=>openPerson(+c.dataset.person))}
+function openPerson(i){
+ let p=people[i],first=p.name.split(' ')[0].toLowerCase(),assigned=tasks.map((t,ti)=>({...t,_i:ti})).filter(t=>t.type==='Team'&&t.title.toLowerCase().includes(first));
+ let teamView=p.type==='Team'?`<div class="small-label">ASSIGNED WORK</div><div class="action-list">${assigned.length?assigned.map(t=>`<button data-open-team-task="${t._i}"><strong>${escapeHtml(t.title)}</strong><br><small>${t.status||'Assigned'} · ${t.time}</small></button>`).join(''):'<button>No assigned tasks yet</button>'}</div>`:`<div class="form-field"><label>NEXT FOLLOW-UP</label><input id="nextFollowup" value="${p.next}"></div><div class="action-list"><button id="saveFollowup">✓ Save next follow-up</button><button id="personCall">☎ Call</button><button id="personWhatsapp">◉ Open WhatsApp</button><button id="personCopy">□ Copy follow-up message</button></div>`;
+ $('#modalBody').innerHTML=`<h2>${p.name}</h2><p>${p.type} · ${p.note}</p>${teamView}`;$('#modal').classList.add('open');
+ if(p.type==='Team'){$$('[data-open-team-task]').forEach(b=>b.onclick=()=>openStaffTask(+b.dataset.openTeamTask));return}
+ $('#saveFollowup').onclick=()=>{p.next=$('#nextFollowup').value;renderPeople();$('#modal').classList.remove('open');toast('Follow-up saved and will appear on Today.')};$('#personCall').onclick=()=>toast('Add a phone number to call directly.');$('#personWhatsapp').onclick=()=>window.open('https://wa.me/?text='+encodeURIComponent('Hi '+p.name+', just following up.'),'_blank');$('#personCopy').onclick=()=>{navigator.clipboard?.writeText('Hi '+p.name+', just following up on our last conversation.');toast('Message copied.')}
+}
+$$('[data-filter]').forEach(b=>b.onclick=()=>{$$('[data-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderPeople(b.dataset.filter,$('#peopleSearch').value)});$('#peopleSearch').oninput=e=>renderPeople($('.filters button.active').dataset.filter,e.target.value);
+function renderRoutine(){$('#routineList').innerHTML=routine.map(r=>`<div class="routine-item"><time>${r[0]}</time><span class="routine-dot">${r[1]}</span><div><strong>${r[2]}</strong><small>${r[3]}</small></div></div>`).join('')}
+function renderRules(){$('#ruleCount').textContent=`${rules.length} rules`;$('#rulesList').innerHTML=rules.map((r,i)=>`<div class="rule-item"><span class="rule-number">0${i+1}</span><p>${escapeHtml(r)}</p><button data-del-rule="${i}">×</button></div>`).join('');$$('[data-del-rule]').forEach(b=>b.onclick=()=>{rules.splice(+b.dataset.delRule,1);store.set('tide_rules',rules);renderRules()})}
+let selectedCalIndex=2;
+function itemDay(x){if(x.day)return x.day;if((x.sub||'').includes('Tomorrow'))return'Tomorrow';return'Today'}
+function allCalendarItems(){return[...meetings.map((x,i)=>({...x,source:'Meeting',sourceIndex:i})),...tasks.filter(x=>!x.done).map((x,i)=>({...x,source:'Task',sourceIndex:tasks.indexOf(x)}))]}
+function detailMeta(x){return [x.client&&`Client: ${x.client}`,x.service&&`Service: ${x.service}`,x.assignee&&x.assignee!=='Myself'&&`Assigned: ${x.assignee}`,x.notes].filter(Boolean)}
+function renderCalendar(offset=0){
+ let days=['MON','TUE','WED','THU','FRI','SAT','SUN'],nums=[17,18,19,20,21,22,23].map(n=>n+offset*7);
+ $('#weekDays').innerHTML=days.map((d,i)=>`<div class="day ${i===selectedCalIndex?'active':''}" data-cal-day="${i}" role="button" tabindex="0"><small>${d}</small><strong>${nums[i]}</strong></div>`).join('');
+ $('#calRange').textContent=`${nums[0]}–${nums[6]} August 2026`;
+ $$('[data-cal-day]').forEach(d=>{d.onclick=()=>{selectedCalIndex=+d.dataset.calDay;renderCalendar(offset)};d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();d.click()}}});
+ let labels=['Monday','Tuesday','Today','Tomorrow','Friday','Saturday','Sunday'],label=offset===0?labels[selectedCalIndex]:days[selectedCalIndex];
+ let all=allCalendarItems(),list=all.filter(x=>{let md=itemDay(x);if(offset!==0)return false;if(label==='Today')return md==='Today';if(label==='Tomorrow')return md==='Tomorrow'||md==='Thursday';return md.toLowerCase()===label.toLowerCase()});
+ $('#agenda').innerHTML=`<div class="agenda-label"><strong>${label} — Detailed tasks</strong><span>${list.length} ${list.length===1?'item':'items'}</span></div>`+(list.length?list.map(x=>`<div class="agenda-row"><time>${x.time||'Any time'}</time><div class="event ${x.kind||''}" data-calendar-source="${x.source}" data-calendar-index="${x.sourceIndex}"><h4>${escapeHtml(x.title)}</h4><p>${x.source} · ${x.type||x.sub||''}</p><div class="event-details">${detailMeta(x).map(m=>`<span>${escapeHtml(m)}</span>`).join('')||`<span>${escapeHtml(x.sub||'No extra details')}</span>`}</div></div></div>`).join(''):`<div class="empty-agenda"><span>□</span><strong>Nothing planned for ${label.toLowerCase()}</strong><p>Your time is open. Add a detailed item from Brain Dump.</p></div>`);
+ $$('[data-calendar-source]').forEach(e=>e.onclick=()=>e.dataset.calendarSource==='Task'?openTaskActions(+e.dataset.calendarIndex):finishMeeting());
+ $('#upcomingList').innerHTML=all.slice(0,5).map(x=>`<div class="upcoming-item"><strong>${escapeHtml(x.title)}</strong><span>${itemDay(x)} · ${x.time||'Any time'} · ${x.source}</span></div>`).join('')
+}
+function renderCalendarOverview(view){
+ let all=allCalendarItems(),weekly=view==='weekly',groups=weekly?['Today','Tomorrow','Friday','Saturday','Sunday']:['Week 1','Week 2','Week 3','Week 4'];
+ let distribute=g=>weekly?all.filter(x=>itemDay(x)===g||(g==='Tomorrow'&&itemDay(x)==='Thursday')):all.filter((x,i)=>i%4===groups.indexOf(g));
+ $('#calendarOverview').innerHTML=`<div class="overview-head"><div><p class="eyebrow">${weekly?'WEEKLY':'MONTHLY'} UPDATE</p><h2>${weekly?'Your detailed week.':'Your detailed month.'}</h2><p>Tasks, meetings, clients and delivered services in one view.</p></div><span>${all.length} scheduled items</span></div><div class="overview-groups">${groups.map(g=>{let list=distribute(g);return`<div class="overview-group"><div class="overview-group-head"><strong>${g}</strong><span>${list.length} items</span></div>${list.length?list.map(x=>`<div class="detail-task"><time>${x.time||'Any time'}</time><div><h4>${escapeHtml(x.title)}</h4><p>${[x.client,x.service,x.assignee,x.notes].filter(Boolean).map(escapeHtml).join(' · ')||escapeHtml(x.sub||x.type||x.source)}</p></div><span>${x.source}</span></div>`).join(''):'<div class="detail-task"><time>—</time><div><h4>No items</h4><p>Your schedule is clear.</p></div><span>Open</span></div>'}</div>`}).join('')}</div>`
+}
+let weekOffset=0;$('#prevWeek').onclick=()=>{selectedCalIndex=0;renderCalendar(--weekOffset)};$('#nextWeek').onclick=()=>{selectedCalIndex=0;renderCalendar(++weekOffset)};$('#todayBtn').onclick=()=>{weekOffset=0;selectedCalIndex=2;renderCalendar()};
+$$('[data-calendar-view]').forEach(b=>b.onclick=()=>{$$('[data-calendar-view]').forEach(x=>x.classList.toggle('active',x===b));let daily=b.dataset.calendarView==='daily';$('#dailyCalendarView').classList.toggle('hidden',!daily);$('#calendarOverview').classList.toggle('active',!daily);if(!daily)renderCalendarOverview(b.dataset.calendarView)});
+function modal(title,desc,fields,action){$('#modalBody').innerHTML=`<h2>${title}</h2><p>${desc}</p>${fields}<div class="form-actions"><button class="primary" id="modalSave">Save</button></div>`;$('#modal').classList.add('open');$('#modalSave').onclick=action}
+$('#modalClose').onclick=()=>$('#modal').classList.remove('open');$('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('open')};
+$('#addRuleBtn').onclick=()=>modal('Add a life rule','Keep it short, clear and personal.',`<div class="form-field"><label>MY RULE</label><input id="ruleInput" placeholder="e.g. Phone away at 11:30 PM" autofocus></div>`,()=>{let v=$('#ruleInput').value.trim();if(v){rules.push(v);store.set('tide_rules',rules);renderRules();$('#modal').classList.remove('open');toast('Rule added to your life system.')}});
+$('#addPersonBtn').onclick=()=>modal('Add a person','Just the basics. You can add details later.',`<div class="form-field"><label>NAME</label><input id="personName" placeholder="Full name"></div><div class="form-field"><label>TYPE</label><select id="personType"><option>Lead</option><option>Client</option><option>Team</option></select></div>`,()=>{let n=$('#personName').value.trim();if(n){people.unshift({name:n,type:$('#personType').value,note:'New contact',next:'No action set'});renderPeople();$('#modal').classList.remove('open');toast('Person added.')}});
+$('#addMeetingBtn').onclick=()=>modal('Schedule a meeting','Add only what you need to remember.',`<div class="form-field"><label>MEETING</label><input id="meetingTitle" placeholder="Who or what is it about?"></div><div class="form-field"><label>DATE & TIME</label><input id="meetingDate" type="datetime-local"></div>`,()=>{let title=$('#meetingTitle').value.trim(),raw=$('#meetingDate').value;if(!title)return toast('Add a meeting name first.');let d=raw?new Date(raw):new Date(),today=new Date(),tomorrow=new Date();tomorrow.setDate(today.getDate()+1);let day=d.toDateString()===tomorrow.toDateString()?'Tomorrow':d.toDateString()===today.toDateString()?'Today':d.toLocaleDateString('en-IN',{weekday:'long'}),time=raw?d.toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'}):'Any time';meetings.unshift({time,title,day,sub:`${day} · Added manually`,kind:''});store.set('tide_meetings',meetings);selectedCalIndex=day==='Tomorrow'?3:2;renderCalendar(0);$('#modal').classList.remove('open');toast(`Meeting added to ${day}.`)} );
+function editPriorities(){modal('Choose only three','These are the only things that must happen today.',priorities.map((p,i)=>`<div class="form-field"><label>PRIORITY ${i+1}</label><input class="priority-input" value="${escapeHtml(p.text)}"></div>`).join(''),()=>{priorities=$$('.priority-input').map((x,i)=>({text:x.value.trim()||priorities[i].text,done:false}));store.set('tide_priorities',priorities);renderPriorities();$('#modal').classList.remove('open');toast('Today is clear: only three priorities.')})}
+function openDailyReset(){let unfinished=tasks.filter(t=>!t.done).length;$('#modalBody').innerHTML=`<h2>Two-minute daily reset</h2><p>Close today gently. Tomorrow does not need to live in your head tonight.</p><div class="summary-box"><strong>${tasks.filter(t=>t.done).length} completed today</strong><br>${unfinished} unfinished items can move to tomorrow.</div><div class="form-field"><label>TOMORROW’S FIRST PRIORITY</label><input id="tomorrowFirst" placeholder="The one thing I’ll start with"></div><div class="form-field"><label>WAKE-UP TARGET</label><input id="wakeTarget" type="time" value="07:30"></div><div class="action-list"><button id="finishReset">✓ Move unfinished items and finish my day</button></div>`;$('#modal').classList.add('open');$('#finishReset').onclick=()=>{tasks.filter(t=>!t.done).forEach(t=>{if(!t.sub.includes('Tomorrow'))t.sub='Tomorrow · '+t.type});let first=$('#tomorrowFirst').value.trim();if(first){priorities[0]={text:first,done:false};store.set('tide_priorities',priorities);renderPriorities()}store.set('tide_tasks',tasks);renderTasks();$('#modal').classList.remove('open');toast('Day closed. Your mind can rest now.')}}
+function openWeeklyCleanup(){let overdue=tasks.filter(t=>!t.done).length,pending=tasks.filter(t=>t.type==='Team'&&!t.done).length,undated=thoughts.filter(t=>t.meta.includes('Inbox')).length;$('#modalBody').innerHTML=`<h2>Five-minute weekly cleanup</h2><p>Only the things that may have slipped.</p><div class="summary-box">${overdue} unfinished tasks<br>${pending} pending staff items<br>${undated} thoughts without a clear place<br>${meetings.length} upcoming meetings</div><div class="action-list"><button id="reviewTasks">→ Review unfinished tasks</button><button id="reviewStaff">♙ Review staff work</button><button id="clearCompleted">✓ Clear completed tasks</button></div>`;$('#modal').classList.add('open');$('#reviewTasks').onclick=()=>{$('#modal').classList.remove('open');switchTab('today')};$('#reviewStaff').onclick=()=>{$('#modal').classList.remove('open');switchTab('people');$$('[data-filter]').find(x=>x.dataset.filter==='Team')?.click()};$('#clearCompleted').onclick=()=>{tasks=tasks.filter(t=>!t.done);store.set('tide_tasks',tasks);renderTasks();$('#modal').classList.remove('open');toast('Completed tasks cleared.')}}
+function openBmcChecklist(task){let items=['File and application copy','ID / Aadhaar copy','Required supporting documents','Client and property details','Payment information','Name of person to meet'];$('#modalBody').innerHTML=`<h2>BMC visit checklist</h2><p>${task?escapeHtml(task.title):'Reusable before every BMC visit'}</p><div class="checklist">${items.map((x,i)=>`<label><input type="checkbox" data-bmc-check> ${x}</label>`).join('')}</div><div class="form-actions"><button class="primary" id="bmcReady">I’m ready</button></div>`;$('#modal').classList.add('open');$('#bmcReady').onclick=()=>{let n=$$('[data-bmc-check]:checked').length;if(n<items.length)return toast(`${items.length-n} checklist item${items.length-n>1?'s':''} still missing.`);$('#modal').classList.remove('open');toast('BMC checklist complete. You’re ready to go.')}}
+function openReminderSettings(){let prefs=store.get('tide_reminder_prefs',[true,true,true,false]);let labels=['Gym at 6:30 PM','Phone away at 11:30 PM','Lead follow-up block at 11:00 AM','Silence work after 8:30 PM'];$('#modalBody').innerHTML=`<h2>Connected reminders</h2><p>Your rules can quietly guide your day.</p>${labels.map((x,i)=>`<div class="reminder-row"><span>${x}</span><button class="toggle ${prefs[i]?'on':''}" data-reminder="${i}"><i></i></button></div>`).join('')}<div class="form-actions"><button class="primary" id="allowNotifications">Allow notifications</button></div>`;$('#modal').classList.add('open');$$('[data-reminder]').forEach(b=>b.onclick=()=>{b.classList.toggle('on');prefs[+b.dataset.reminder]=b.classList.contains('on');store.set('tide_reminder_prefs',prefs)});$('#allowNotifications').onclick=async()=>{if('Notification'in window){let r=await Notification.requestPermission();toast(r==='granted'?'Reminders are enabled.':'Notifications were not allowed.')}else toast('Browser notifications are not supported here.')}}
+function finishMeeting(){modal('What happens next?','Never leave a meeting without a next action.',`<div class="form-field"><label>NEXT ACTION</label><select id="meetingNext"><option>Send proposal</option><option>Call after three days</option><option>Collect payment</option><option>Assign work to staff</option><option>No further action</option></select></div><div class="form-field"><label>SHORT NOTE</label><input id="meetingNote" placeholder="Anything worth remembering?"></div>`,()=>{let action=$('#meetingNext').value;if(action!=='No further action'){tasks.unshift({time:'Any time',title:action,sub:'Meeting follow-up · Today',type:action.includes('staff')?'Team':'Client',done:false,status:action.includes('staff')?'Assigned':''});store.set('tide_tasks',tasks);renderTasks()}$('#modal').classList.remove('open');toast(action==='No further action'?'Meeting closed.':'Next action added to Today.')})}
+function openSearch(){
+ $('#modalBody').innerHTML=`<h2>Search everything</h2><p>Tasks, people, meetings, thoughts and BMC files.</p><div class="form-field"><input id="globalSearchInput" placeholder="Type a name, task or file reference" autofocus></div><div class="action-list" id="searchResults"><button>Start typing to search…</button></div>`;$('#modal').classList.add('open');let input=$('#globalSearchInput');setTimeout(()=>input.focus(),50);input.oninput=()=>{let q=input.value.toLowerCase().trim(),all=[...tasks.map(x=>({title:x.title,meta:'Task · '+x.type,tab:'today'})),...people.map(x=>({title:x.name,meta:x.type+' · '+x.next,tab:'people'})),...meetings.map(x=>({title:x.title,meta:'Meeting · '+x.time,tab:'calendar'})),...thoughts.map(x=>({title:x.text,meta:x.meta,tab:'dump'}))].filter(x=>q&&x.title.toLowerCase().includes(q)).slice(0,8);$('#searchResults').innerHTML=all.length?all.map((x,i)=>`<button data-result="${i}"><strong>${escapeHtml(x.title)}</strong><br><small>${x.meta}</small></button>`).join(''):'<button>No matching item found</button>';$$('[data-result]').forEach(b=>b.onclick=()=>{$('#modal').classList.remove('open');switchTab(all[+b.dataset.result].tab)})}}
+$('#editRoutine').onclick=()=>openReminderSettings();$('#editPriorities').onclick=editPriorities;
+$('#dailyResetBtn').onclick=openDailyReset;$('#mobileResetBtn').onclick=openDailyReset;$('#weeklyCleanupBtn').onclick=openWeeklyCleanup;$('#openWeeklyFromToday').onclick=openWeeklyCleanup;
+$('#bmcTemplateBtn').onclick=()=>openBmcChecklist();$('#reminderSettingsBtn').onclick=openReminderSettings;$('#meetingFollowupBtn').onclick=finishMeeting;
+const ruleDays=['Protect the morning. Don’t open WhatsApp before your first priority is done.','Never leave a meeting without deciding the next action.','Your health is a business asset. Move for at least thirty minutes.','Do less, but finish what you start.'];let ri=0;$('#newRuleOfDay').onclick=()=>{$('.rules-banner h2').textContent=ruleDays[++ri%ruleDays.length]};
+$('[data-complete-next]').onclick=e=>{e.currentTarget.textContent='✓ Completed';e.currentTarget.disabled=true;toast('Great. Now move to the next right thing.')};
+$('#searchBtn').onclick=openSearch;$('.notification').onclick=openReminderSettings;
+const updateViews={
+ week:{eyebrow:'WEEKLY UPDATE',title:'Your week, without the noise.',subtitle:'A quick look at what moved and what needs attention next.',stats:[['Tasks finished','18','↑ 4 from last week'],['Meetings','7','All followed up'],['Client follow-ups','9','3 still waiting'],['Life rhythm','4/7','Gym needs attention']],focusLabel:'FOCUS FOR NEXT WEEK',focus:'Follow up with 3 warm leads and close pending BMC files.'},
+ month:{eyebrow:'MONTHLY UPDATE',title:'Your month at a glance.',subtitle:'Only the patterns that help you plan the next month better.',stats:[['Tasks finished','72','↑ 12 from last month'],['Meetings','24','21 followed up'],['Clients progressed','11','4 deals active'],['Life rhythm','68%','Sleep improving']],focusLabel:'FOCUS FOR NEXT MONTH',focus:'Protect your mornings, improve lead follow-ups and keep Sundays lighter.'}
+};
+function renderUpdate(view='week'){let u=updateViews[view];$('#updateEyebrow').textContent=u.eyebrow;$('#updateTitle').textContent=u.title;$('#updateSubtitle').textContent=u.subtitle;$('#updateSummary').innerHTML=u.stats.map((s,i)=>`<div class="summary-stat ${i>1?'attention':''}"><span>${s[0]}</span><strong>${s[1]}</strong><small>${s[2]}</small></div>`).join('');$('#focusLabel').textContent=u.focusLabel;$('#focusText').textContent=u.focus;$$('[data-update-view]').forEach(b=>b.classList.toggle('active',b.dataset.updateView===view))}
+$$('[data-update-view]').forEach(b=>b.onclick=()=>renderUpdate(b.dataset.updateView));$('#reviewUpdateBtn').onclick=openWeeklyCleanup;
+function toast(msg){let t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2400)}
+function escapeHtml(s){return s.replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+$('#liveDate').textContent='Wednesday, 19 August';setManualDate();renderUpdate();renderPriorities();renderTasks();renderThoughts();renderPeople();renderRoutine();renderRules();renderCalendar();
