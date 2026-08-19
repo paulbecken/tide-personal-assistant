@@ -15,6 +15,7 @@
         <button class="nav-item" data-tab="dump"><span>✦</span> Brain Dump</button>
         <button class="nav-item" data-tab="calendar"><span>□</span> Calendar</button>
         <button class="nav-item" data-tab="people"><span>♙</span> People</button>
+        <button class="nav-item" data-tab="routine"><span>◌</span> Routine</button>
         <button class="nav-item" data-tab="rules"><span>◎</span> My Rules</button>
       </nav>
       <div class="sidebar-card simple-tools">
@@ -42,7 +43,9 @@
           <div class="next-icon">→</div>
           <div class="next-content"><div class="small-label">DO THIS NEXT · TAP TO OPEN QUEUE</div><h2 id="nextTaskTitle">Call Rohan about the campaign proposal</h2><p id="nextTaskMeta"><span class="tag client">Work</span><span>◷ 10:30 AM</span></p></div>
           <button class="queue-peek" id="openQueueBtn">☷ Up next</button>
-          <button class="done-btn" id="completeNextBtn">✓ Mark done</button>
+          <div class="swipe-complete" id="swipeComplete" aria-label="Swipe right to complete task">
+            <div class="swipe-fill" id="swipeFill"></div><span class="swipe-knob" id="swipeKnob">→</span><small>Swipe right</small><b>Complete</b>
+          </div>
         </div>
         <div class="grid-main">
           <div>
@@ -128,6 +131,36 @@
         <div class="people-grid" id="peopleGrid"></div>
       </section>
 
+      <section class="page" id="routine">
+        <div class="page-head compact"><div><p class="eyebrow">YOUR HEALTH & LIFE, UNDERSTOOD</p><h1>Routine <span>AI Tracker</span></h1><p>Speak or type naturally. Tide sorts food, water, workout, sleep and focused work for you.</p></div><button class="primary" id="addRoutineScheduleBtn">＋ Add to schedule</button></div>
+
+        <div class="routine-capture">
+          <div class="routine-ai-mark">✦</div>
+          <div class="routine-input-wrap"><label>Tell Tide anything about your day</label><input id="routineInput" placeholder='Try “I ate 1 burger” or “45 minutes gym workout”'><small>AI estimates are approximate and can be edited.</small></div>
+          <button class="icon-btn" id="routineVoiceBtn" title="Speak your update">●</button><button class="primary" id="routineLogBtn">Track it →</button>
+        </div>
+        <div class="routine-prompts"><button data-routine-prompt="I drank 500 ml water">＋ Water</button><button data-routine-prompt="I ate 1 burger">＋ Food</button><button data-routine-prompt="I did 1 hour gym workout">＋ Workout</button><button data-routine-prompt="I slept 7 hours">＋ Sleep</button><button data-routine-prompt="I worked for 2 hours on client proposals">＋ Focus work</button></div>
+
+        <div class="section-title routine-title"><div><h3>Today at a glance</h3><small id="routineDateLabel">Wednesday, 19 August</small></div><span class="ai-sorted">✦ Sorted automatically</span></div>
+        <div class="routine-metrics" id="routineMetrics"></div>
+
+        <div class="routine-main-grid">
+          <div>
+            <div class="section-title"><h3>Today’s timeline</h3><button id="clearRoutineLog">Clear today</button></div>
+            <div class="routine-timeline" id="routineTimeline"></div>
+          </div>
+          <aside>
+            <div class="section-title"><h3>Routine schedule</h3><button id="editRoutineScheduleBtn">＋ Add</button></div>
+            <div class="routine-schedule" id="routineSchedule"></div>
+          </aside>
+        </div>
+
+        <div class="routine-report">
+          <div class="update-head"><div><p class="eyebrow" id="routineReportEyebrow">DAILY REPORT</p><h2 id="routineReportTitle">How your day is balancing.</h2><p>Simple patterns—not pressure.</p></div><div class="update-switch"><button class="active" data-routine-report="daily">Daily</button><button data-routine-report="weekly">Weekly</button><button data-routine-report="monthly">Monthly</button></div></div>
+          <div class="routine-report-grid"><div class="routine-chart" id="routineChart"></div><div class="routine-insight" id="routineInsight"></div></div>
+        </div>
+      </section>
+
       <section class="page" id="rules">
         <div class="page-head compact"><div><p class="eyebrow">YOUR PERSONAL OPERATING SYSTEM</p><h1>My <span>Rules</span></h1><p>A simple timetable and the promises you want to live by.</p></div><button class="primary" id="addRuleBtn">＋ Add a rule</button></div>
         <div class="rules-banner"><div><span>◎</span></div><div><small>RULE OF THE DAY</small><h2>Protect the morning. Don’t open WhatsApp before your first task is done.</h2></div><button id="newRuleOfDay">Show another</button></div>
@@ -146,7 +179,7 @@
     </main>
 
     <nav class="mobile-nav">
-      <button class="active" data-tab="today">⌂<span>Today</span></button><button data-tab="dump">✦<span>Dump</span></button><button class="mobile-plus" data-open-dump>＋</button><button data-tab="calendar">□<span>Calendar</span></button><button data-tab="rules">◎<span>Rules</span></button>
+      <button class="active" data-tab="today">⌂<span>Today</span></button><button data-tab="dump">✦<span>Dump</span></button><button class="mobile-plus" data-open-dump>＋</button><button data-tab="calendar">□<span>Calendar</span></button><button data-tab="routine">◌<span>Routine</span></button>
     </nav>
   </div>
 
