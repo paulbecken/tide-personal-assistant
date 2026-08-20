@@ -31,7 +31,7 @@
       <header class="topbar">
         <button class="mobile-menu" id="mobileMenu">☰</button>
         <div class="date-pill"><span class="pulse"></span><span id="liveDate">Wednesday, 19 August</span></div>
-        <div class="top-actions"><button class="icon-btn" id="searchBtn">⌕</button><button class="icon-btn notification">♢<i></i></button><button class="primary small-add" data-open-dump>＋ Add something</button></div>
+        <div class="top-actions"><button class="icon-btn" id="searchBtn" title="Search everything">⌕</button></div>
       </header>
 
       <section class="page active" id="today">
@@ -46,34 +46,15 @@
           <button class="queue-peek" id="openQueueBtn">☷ Open list</button>
           <span class="swipe-hint">Swipe task →</span>
         </div>
-        <div class="grid-main support-only">
-          <aside class="right-column wide">
-            <div class="mini-card meeting-card">
-              <div class="section-title"><h3>Next meeting</h3><span class="live-label">IN 2H</span></div>
-              <div class="meeting-time"><strong>12:30</strong><span>PM</span></div>
-              <h4>Content strategy review</h4><p>with Cafe Monsoon team</p>
-              <div class="meeting-meta"><span>◉ Google Meet</span><span>45 min</span></div>
-              <button class="soft-btn" id="meetingFollowupBtn">Finish meeting & set next action</button>
-            </div>
-            <div class="mini-card focus-card">
-              <div class="section-title"><h3>Life rhythm</h3><button data-go-rules>Open rules →</button></div>
-              <div class="habit"><span class="habit-icon">☀</span><div><strong>Morning start</strong><small>Target 7:30 AM</small></div><b>✓</b></div>
-              <div class="habit"><span class="habit-icon">⌁</span><div><strong>Gym</strong><small>6:30 PM · Upper body</small></div><i></i></div>
-              <div class="habit"><span class="habit-icon">☾</span><div><strong>Wind down</strong><small>Start by 11:30 PM</small></div><i></i></div>
-            </div>
-          </aside>
+        <div class="today-action-grid">
+          <button class="today-action-card meeting" id="todayMeetingCard"><span class="today-action-icon">□</span><div><small>MEETING</small><strong id="todayMeetingTitle">Content strategy review</strong><p id="todayMeetingMeta">12:30 PM · Cafe Monsoon</p></div><b id="todayMeetingCount">4</b></button>
+          <button class="today-action-card reminder" id="todayReminderCard"><span class="today-action-icon">◉</span><div><small>REMINDER</small><strong id="todayReminderTitle">BMC Ward Office visit</strong><p id="todayReminderMeta">2:15 PM · File PL-284</p></div><b id="todayReminderCount">2</b></button>
+          <button class="today-action-card followup" id="todayFollowupCard"><span class="today-action-icon">↗</span><div><small>CLIENT FOLLOW-UP</small><strong id="todayFollowupTitle">Call Rohan about proposal</strong><p id="todayFollowupMeta">10:30 AM · Buzz Media Fame</p></div><b id="todayFollowupCount">3</b></button>
         </div>
 
-        <div class="update-section">
-          <div class="update-head">
-            <div><p class="eyebrow" id="updateEyebrow">WEEKLY UPDATE</p><h2 id="updateTitle">Your week, without the noise.</h2><p id="updateSubtitle">A quick look at what moved and what needs attention next.</p></div>
-            <div class="update-switch"><button class="active" data-update-view="week">Weekly</button><button data-update-view="month">Monthly</button></div>
-          </div>
-          <div class="update-summary" id="updateSummary"></div>
-          <div class="update-bottom">
-            <div class="update-focus"><span>→</span><div><small id="focusLabel">FOCUS FOR NEXT WEEK</small><strong id="focusText">Follow up with 3 warm leads and close pending BMC files.</strong></div></div>
-
-          </div>
+        <div class="month-feed-card">
+          <div class="month-feed-head"><div><p class="eyebrow">YOUR MONTH</p><h2 id="monthFeedTitle">August 2026</h2><p>Every task, meeting and follow-up arranged by date.</p></div><div><button id="monthFeedPrev">‹</button><button id="monthFeedToday">Today</button><button id="monthFeedNext">›</button></div></div>
+          <div class="month-task-feed" id="monthTaskFeed"></div>
         </div>
       </section>
 
@@ -159,7 +140,7 @@
       <section class="page" id="rules">
         <div class="page-head compact"><div><p class="eyebrow">YOUR PERSONAL OPERATING SYSTEM</p><h1>My <span>Rules</span></h1><p>A simple timetable and the promises you want to live by.</p></div><button class="primary" id="addRuleBtn">＋ Add a rule</button></div>
         <div class="rules-banner"><div><span>◎</span></div><div><small>RULE OF THE DAY</small><h2>Protect the morning. Don’t open WhatsApp before your first task is done.</h2></div><button id="newRuleOfDay">Show another</button></div>
-        <div class="rules-tools"><button id="reminderSettingsBtn"><span>◉</span><div><strong>Connected reminders</strong><small>Rules that remind you automatically</small></div></button><button id="bmcTemplateBtn"><span>□</span><div><strong>BMC visit checklist</strong><small>Reusable before every visit</small></div></button><button id="mobileResetBtn"><span>☾</span><div><strong>Daily reset</strong><small>Clear today and plan tomorrow</small></div></button></div>
+        <div class="rules-tools"><button id="bmcTemplateBtn"><span>□</span><div><strong>BMC visit checklist</strong><small>Reusable before every visit</small></div></button><button id="mobileResetBtn"><span>☾</span><div><strong>Daily reset</strong><small>Clear today and plan tomorrow</small></div></button></div>
         <div class="rules-layout">
           <div>
             <div class="section-title"><h3>My timetable</h3><button id="editRoutine">Edit routine</button></div>
