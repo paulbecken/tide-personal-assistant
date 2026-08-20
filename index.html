@@ -47,7 +47,7 @@
           <div class="hero-green" id="heroGreen"></div>
           <div class="next-icon">→</div>
           <div class="next-content"><div class="small-label">TO DO LIST · <span id="todayTaskCount">5 TASKS TODAY</span></div><h2 id="nextTaskTitle">Call Rohan about the campaign proposal</h2><p id="nextTaskMeta"><span class="tag client">Work</span><span>◷ 10:30 AM</span></p></div>
-          <button class="queue-peek" id="openQueueBtn">☷ Open list</button>
+          <div class="hero-actions"><button class="focus-mode-btn" id="focusModeBtn" title="Start focus mode">▶</button><button class="queue-peek" id="openQueueBtn">☷ Open list</button></div>
           <span class="swipe-hint">Swipe task →</span>
         </div>
         <div class="today-action-grid category-dashboard">
@@ -198,6 +198,13 @@
       <div class="voice-result" id="voiceResult"></div>
       <button class="primary voice-done" id="voiceDone">Done</button>
     </div>
+  </div>
+  <div class="focus-overlay" id="focusOverlay">
+    <div class="focus-green" id="focusGreen"></div>
+    <button class="focus-close" id="focusClose">×</button>
+    <div class="focus-top"><span>FOCUS MODE</span><button id="focusTimerToggle">◷ <b id="focusSmallTimer">00:00</b></button></div>
+    <div class="focus-centre"><small id="focusCategory">TASK</small><h2 id="focusTaskTitle">Your current task</h2><p id="focusTaskMeta">One task. Nothing else.</p><div class="focus-big-timer" id="focusBigTimer">00:00</div></div>
+    <div class="focus-swipe"><span>→</span><b>Swipe right when complete</b></div>
   </div>
   <div class="modal" id="modal"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div id="modalBody"></div></div></div>
   <div class="toast" id="toast">Saved to your brain dump</div>
