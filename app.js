@@ -1,5 +1,5 @@
 const $=(s,p=document)=>p.querySelector(s), $$=(s,p=document)=>[...p.querySelectorAll(s)];
-function bindFastTap(el,handler){if(!el)return;el.onpointerup=e=>{e.preventDefault();e.stopPropagation();handler(e)};el.onclick=e=>{e.preventDefault();e.stopPropagation();if(e.detail===0)handler(e)}}
+function bindFastTap(el,handler){if(!el)return;let lastPointer=0;el.onpointerup=e=>{lastPointer=Date.now();e.preventDefault();e.stopPropagation();handler(e)};el.onclick=e=>{e.preventDefault();e.stopPropagation();if(Date.now()-lastPointer>350)handler(e)}}
 const store={
  get(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}},
  set(k,v){localStorage.setItem(k,JSON.stringify(v))}
