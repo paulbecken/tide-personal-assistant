@@ -47,14 +47,13 @@
           <span class="swipe-hint">Swipe task →</span>
         </div>
         <div class="today-action-grid">
-          <button class="today-action-card meeting" id="todayMeetingCard"><span class="today-action-icon">□</span><div><small>MEETING</small><strong id="todayMeetingTitle">Content strategy review</strong><p id="todayMeetingMeta">12:30 PM · Cafe Monsoon</p></div><b id="todayMeetingCount">4</b></button>
-          <button class="today-action-card reminder" id="todayReminderCard"><span class="today-action-icon">◉</span><div><small>REMINDER</small><strong id="todayReminderTitle">BMC Ward Office visit</strong><p id="todayReminderMeta">2:15 PM · File PL-284</p></div><b id="todayReminderCount">2</b></button>
-          <button class="today-action-card followup" id="todayFollowupCard"><span class="today-action-icon">↗</span><div><small>CLIENT FOLLOW-UP</small><strong id="todayFollowupTitle">Call Rohan about proposal</strong><p id="todayFollowupMeta">10:30 AM · Buzz Media Fame</p></div><b id="todayFollowupCount">3</b></button>
+          <button class="today-action-card meeting" id="todayMeetingCard"><span class="today-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/><circle cx="9" cy="15" r="2"/><path d="M13 17c.5-1.5 1.5-2.3 3-2.3 1.4 0 2.5.8 3 2.3"/></svg></span><div><small>MEETING</small><strong id="todayMeetingTitle">Content strategy review</strong><p id="todayMeetingMeta">12:30 PM · Cafe Monsoon</p></div><b id="todayMeetingCount">4</b></button>
+          <button class="today-action-card reminder" id="todayReminderCard"><span class="today-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></span><div><small>REMINDER</small><strong id="todayReminderTitle">BMC Ward Office visit</strong><p id="todayReminderMeta">2:15 PM · File PL-284</p></div><b id="todayReminderCount">2</b></button>
+          <button class="today-action-card followup" id="todayFollowupCard"><span class="today-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 4H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3"/><path d="M13 3h8v8M21 3l-9 9"/></svg></span><div><small>FOLLOW-UP</small><strong id="todayFollowupTitle">Call Rohan about proposal</strong><p id="todayFollowupMeta">10:30 AM · Buzz Media Fame</p></div><b id="todayFollowupCount">3</b></button>
         </div>
 
         <div class="month-feed-card">
-          <div class="month-feed-head"><div><p class="eyebrow">YOUR MONTH</p><h2 id="monthFeedTitle">August 2026</h2><p>Every task, meeting and follow-up arranged by date.</p></div><div><button id="monthFeedPrev">‹</button><button id="monthFeedToday">Today</button><button id="monthFeedNext">›</button></div></div>
-          <div class="month-feed-label"><strong>Date-wise tasks</strong><span>Tap any item to open that date</span></div>
+          <div class="month-feed-head simple"><button id="monthFeedPrev" title="Previous month">‹</button><div><h2>Date-wise tasks <span id="monthFeedTitle">(August 2026)</span></h2><p>Today first, followed by yesterday and earlier dates.</p></div><button id="monthFeedNext" title="Next month">›</button></div>
           <div class="month-task-feed" id="monthTaskFeed"></div>
         </div>
       </section>
