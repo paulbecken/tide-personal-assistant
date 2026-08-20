@@ -207,7 +207,7 @@
     <div class="focus-countdown-panel" id="focusCountdownPanel"><div class="focus-countdown-head"><span>⌛ Focus countdown</span><button id="focusCountdownClose">×</button></div><div class="focus-countdown-display" id="focusCountdownDisplay">25:00</div><div class="focus-presets"><button data-focus-minutes="5">5m</button><button data-focus-minutes="15">15m</button><button class="active" data-focus-minutes="25">25m</button><button data-focus-minutes="45">45m</button></div><div class="focus-countdown-actions"><input id="focusCustomMinutes" type="number" min="1" max="180" placeholder="Minutes"><button id="focusCountdownStart">Start countdown</button></div><p id="focusCountdownMessage">The stopwatch pauses while your countdown runs.</p></div>
     <div class="focus-swipe"><span>→</span><b>Swipe right when complete</b></div>
   </div>
-  <div class="modal" id="modal"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div id="modalBody"></div></div></div>
+  <div class="modal" id="modal"><div class="modal-card"><button type="button" class="modal-close" id="modalClose" aria-label="Close" onclick="window.forceCloseModal && window.forceCloseModal(event)">×</button><div id="modalBody"></div></div></div>
   <div class="toast" id="toast">Saved to your brain dump</div>
   <script src="app.js"></script>
 </body>
