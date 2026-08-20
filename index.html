@@ -14,6 +14,9 @@
         <button class="nav-item active" data-tab="today"><span>⌂</span> Today</button>
         <button class="nav-item" data-tab="dump"><span>✦</span> Brain Dump</button>
         <button class="nav-item" data-tab="calendar"><span>□</span> Calendar</button>
+        <button class="nav-item" data-tab="meetings"><span>▣</span> Meetings</button>
+        <button class="nav-item" data-tab="reminders"><span>◉</span> Reminders</button>
+        <button class="nav-item" data-tab="followups"><span>↗</span> Follow-ups</button>
         <button class="nav-item" data-tab="people"><span>♙</span> People</button>
         <button class="nav-item" data-tab="routine"><span>◌</span> Routine</button>
         <button class="nav-item" data-tab="rules"><span>◎</span> My Rules</button>
@@ -53,7 +56,7 @@
         </div>
 
         <div class="month-feed-card">
-          <div class="month-feed-head simple"><button id="monthFeedPrev" title="Previous month">‹</button><div><h2>Date-wise tasks <span id="monthFeedTitle">(August 2026)</span></h2><p>Today first, followed by yesterday and earlier dates.</p></div><button id="monthFeedNext" title="Next month">›</button></div>
+          <div class="month-feed-head simple"><button id="monthFeedPrev" title="Previous month">‹</button><div><h2>Date-wise tasks <span id="monthFeedTitle">(August 2026)</span></h2></div><button id="monthFeedNext" title="Next month">›</button></div>
           <div class="month-task-feed" id="monthTaskFeed"></div>
         </div>
       </section>
@@ -99,6 +102,22 @@
           <aside class="mini-card upcoming"><div class="section-title"><h3>Upcoming</h3><span>Tasks & meetings</span></div><div id="upcomingList"></div></aside>
         </div>
         <div class="calendar-overview" id="calendarOverview"></div>
+      </section>
+
+      <section class="page" id="meetings">
+        <div class="page-head compact"><div><p class="eyebrow">DATES AND TIMES, CLEARLY</p><h1>Meetings</h1><p>Every meeting with its exact date, time and next action.</p></div><button class="primary" id="addMeetingPageBtn">＋ Add meeting</button></div>
+        <div class="dedicated-list" id="meetingsPageList"></div>
+      </section>
+
+      <section class="page" id="reminders">
+        <div class="page-head compact"><div><p class="eyebrow">DON’T KEEP IT IN YOUR HEAD</p><h1>Reminders</h1><p>Urgent, upcoming and completed reminders—kept simple.</p></div><button class="primary" id="addReminderBtn">＋ Add reminder</button></div>
+        <div class="dedicated-summary" id="reminderSummary"></div>
+        <div class="dedicated-list" id="remindersPageList"></div>
+      </section>
+
+      <section class="page" id="followups">
+        <div class="page-head compact"><div><p class="eyebrow">CLIENTS THAT NEED ATTENTION</p><h1>Follow-ups</h1><p>Know whom to contact, when, and what the next step is.</p></div><button class="primary" id="addFollowupBtn">＋ Add follow-up</button></div>
+        <div class="dedicated-list" id="followupsPageList"></div>
       </section>
 
       <section class="page" id="people">
