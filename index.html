@@ -50,16 +50,11 @@
           <div class="today-action-card task" data-open-category="tasks"><button class="category-add" id="quickAddTask" aria-label="Add task" title="Add task">＋</button><span class="today-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6h14M5 12h14M5 18h9"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span><div><small>Task</small><strong id="todayTaskTitle">General work</strong><p id="todayTaskMeta">Your remaining actions</p></div><div class="category-progress-row"><div class="category-progress"><i id="taskProgress"></i></div><span id="taskProgressCount">0/0</span></div></div>
         </div>
 
-        <div class="dashboard-period-bar">
-          <div class="dashboard-view-switch"><button class="active" data-dashboard-view="daily">Daily</button><button data-dashboard-view="weekly">Weekly</button><button data-dashboard-view="monthly">Monthly</button></div>
-          <div class="dashboard-period-nav"><button id="dashboardPeriodPrev">‹</button><strong id="dashboardPeriodLabel">Today</strong><button id="dashboardPeriodNext">›</button></div>
-        </div>
-        <div class="dashboard-period-panel" id="dashboardPeriodPanel"></div>
-
-        <div class="month-feed-card" id="dailyTodoDashboard">
-          <div class="month-feed-head simple"><h2>To Do List</h2><div class="month-selector"><button id="monthFeedPrev" title="Previous month">‹</button><strong id="monthFeedTitle">August 2026</strong><button id="monthFeedNext" title="Next month">›</button></div></div>
-          <div class="month-date-rail-wrap"><div class="month-date-rail" id="monthDateRail"></div></div>
-          <div class="month-task-feed" id="monthTaskFeed"></div>
+        <div class="month-feed-card" id="planningDashboard">
+          <div class="month-feed-head planning-head"><div class="todo-heading-block"><h2>To Do List</h2><div class="dashboard-period-nav"><button id="dashboardPeriodPrev">‹</button><strong id="dashboardPeriodLabel">Today</strong><button id="dashboardPeriodNext">›</button></div></div><div class="dashboard-view-switch compact"><button class="active" data-dashboard-view="daily" title="Daily">D</button><button data-dashboard-view="weekly" title="Weekly">W</button><button data-dashboard-view="monthly" title="Monthly">M</button></div></div>
+          <span id="monthFeedTitle" hidden>August 2026</span>
+          <div id="dailyTodoDashboard"><div class="month-date-rail-wrap"><div class="month-date-rail" id="monthDateRail"></div></div><div class="month-task-feed" id="monthTaskFeed"></div></div>
+          <div class="dashboard-period-panel" id="dashboardPeriodPanel"></div>
         </div>
       </section>
 
