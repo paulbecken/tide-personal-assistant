@@ -25,10 +25,11 @@
         <button class="nav-item" data-tab="rules"><span>◎</span> My Rules</button>
         <button class="nav-item" data-tab="settings"><span>⚙</span> Settings</button>
       </nav>
-      <div class="sidebar-card simple-tools">
-        <div class="small-label">KEEP YOUR MIND CLEAR</div>
-        <button id="dailyResetBtn"><span>☾</span><div><strong>Daily reset</strong><small>2 minutes tonight</small></div></button>
-
+      <div class="sidebar-card continuous-capture">
+        <div class="small-label">QUICK TASK CAPTURE</div>
+        <textarea id="continuousCaptureText" placeholder="Speak or write everything on your mind…"></textarea>
+        <div class="capture-status" id="captureStatus">Ready to capture</div>
+        <div class="capture-actions"><button id="continuousVoiceBtn" title="Start continuous voice">●</button><button id="captureTasksBtn">Create tasks →</button></div>
       </div>
       <div class="profile"><div class="avatar">AK</div><div><strong>Your personal space</strong><span>One thing at a time</span></div><button>•••</button></div>
     </aside>
@@ -168,7 +169,7 @@
       </section>
 
       <section class="page" id="rules">
-        <div class="page-head compact"><div><p class="eyebrow">PERSONAL LIFE TO LIVE BY.</p><h1>My <span>Rule Book</span></h1></div><button class="rule-book-add" id="addRuleLabelBtn" title="Create a new label">＋</button></div>
+        <div class="page-head compact"><div><p class="eyebrow">PERSONAL LIFE RULES TO LIVE BY</p><h1>My <span>Rule Book</span></h1></div><button class="rule-book-add" id="addRuleLabelBtn" title="Create a new label">＋</button></div>
         <div class="rules-notes-shell"><span id="ruleCount" hidden></span><div class="rules-list" id="rulesList"></div></div>
       </section>
 
