@@ -25,12 +25,7 @@
         <button class="nav-item" data-tab="rules"><span>◎</span> My Rules</button>
         <button class="nav-item" data-tab="settings"><span>⚙</span> Settings</button>
       </nav>
-      <div class="sidebar-card continuous-capture">
-        <div class="small-label">QUICK TASK CAPTURE</div>
-        <textarea id="continuousCaptureText" placeholder="Speak or write everything on your mind…"></textarea>
-        <div class="capture-status" id="captureStatus">Ready to capture</div>
-        <div class="capture-actions"><button id="continuousVoiceBtn" title="Start continuous voice">●</button><button id="captureTasksBtn">Create tasks →</button></div>
-      </div>
+      <button class="sidebar-signout" id="sidebarLogoutBtn"><span>↪</span> Sign out</button>
       <div class="profile"><div class="avatar">AK</div><div><strong>Your personal space</strong><span>One thing at a time</span></div><button>•••</button></div>
     </aside>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -59,6 +54,12 @@
           <div class="today-action-card followup" data-open-category="followups"><button class="category-add" id="quickAddFollowup" aria-label="Add follow-up" title="Add follow-up">＋</button><span class="today-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 4H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3"/><path d="M13 3h8v8M21 3l-9 9"/></svg></span><div><small>Follow-up</small><strong id="todayFollowupTitle">Call Rohan about proposal</strong><p id="todayFollowupMeta">10:30 AM · Buzz Media Fame</p></div><div class="category-progress-row"><div class="category-progress"><i id="followupProgress"></i></div><span id="followupProgressCount">0/0</span></div></div>
           <div class="today-action-card task" data-open-category="tasks"><button class="category-add" id="quickAddTask" aria-label="Add task" title="Add task">＋</button><span class="today-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6h14M5 12h14M5 18h9"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span><div><small>Task</small><strong id="todayTaskTitle">General work</strong><p id="todayTaskMeta">Your remaining actions</p></div><div class="category-progress-row"><div class="category-progress"><i id="taskProgress"></i></div><span id="taskProgressCount">0/0</span></div></div>
         </div>
+
+        <section class="bulk-capture-card">
+          <div class="bulk-capture-head"><div><p class="eyebrow">AI TASK ORGANISER</p><h2>Bulk Task Capture</h2><span>Write or record everything. Tide will separate and classify it.</span></div><button id="generateBulkTasks">Generate multiple tasks →</button></div>
+          <div class="bulk-compose"><textarea id="bulkCaptureText" placeholder="Example: Call Rahul tomorrow at 11. Also schedule gym at 7, remind me to carry the BMC file, and follow up with Neha on Friday."></textarea><button class="bulk-generate-icon" id="bulkGenerateIcon" title="Generate tasks">＋</button></div>
+          <div class="bulk-audio-row"><button class="bulk-record" id="bulkRecordBtn"><span>●</span><b>Record</b></button><div class="bulk-recording" id="bulkRecording"><button id="bulkPauseBtn">Ⅱ</button><span id="bulkRecordTimer">00:00</span><audio id="bulkAudioPlayer" controls></audio><button id="bulkSendAudio">➤</button></div><small id="bulkAudioStatus">WhatsApp-style voice capture for bulk tasks</small></div>
+        </section>
 
         <div class="month-feed-card" id="planningDashboard">
           <div class="month-feed-head planning-head"><button class="todo-section-toggle" id="todoSectionToggle" aria-expanded="true"><b>⌃</b><span>To Do List</span></button><div class="dashboard-view-switch compact"><button class="active" data-dashboard-view="daily" title="Daily">D</button><button data-dashboard-view="weekly" title="Weekly">W</button><button data-dashboard-view="monthly" title="Monthly">M</button></div><div class="dashboard-period-nav"><button id="dashboardPeriodPrev">‹</button><strong id="dashboardPeriodLabel">Today</strong><button id="dashboardPeriodNext">›</button></div></div>
@@ -139,33 +140,23 @@
       </section>
 
       <section class="page" id="routine">
-        <div class="page-head compact"><div><p class="eyebrow">YOUR HEALTH & LIFE, UNDERSTOOD</p><h1>Routine <span>AI Tracker</span></h1><p>Speak or type naturally. Tide sorts food, water, workout, sleep and focused work for you.</p></div><button class="primary" id="addRoutineScheduleBtn">＋ Add to schedule</button></div>
-
-        <div class="routine-capture">
-          <div class="routine-ai-mark">✦</div>
-          <div class="routine-input-wrap"><label>Tell Tide anything about your day</label><input id="routineInput" placeholder='Try “I ate 1 burger” or “45 minutes gym workout”'><small>AI estimates are approximate and can be edited.</small></div>
-          <button class="icon-btn" id="routineVoiceBtn" title="Speak your update">●</button><button class="primary" id="routineLogBtn">Track it →</button>
-        </div>
-        <div class="routine-prompts"><button data-routine-prompt="I drank 500 ml water">＋ Water</button><button data-routine-prompt="I ate 1 burger">＋ Food</button><button data-routine-prompt="I did 1 hour gym workout">＋ Workout</button><button data-routine-prompt="I slept 7 hours">＋ Sleep</button><button data-routine-prompt="I worked for 2 hours on client proposals">＋ Focus work</button></div>
-
-        <div class="section-title routine-title"><div><h3>Today at a glance</h3><small id="routineDateLabel">Wednesday, 19 August</small></div><span class="ai-sorted">✦ Sorted automatically</span></div>
-        <div class="routine-metrics" id="routineMetrics"></div>
-
-        <div class="routine-main-grid">
-          <div>
-            <div class="section-title"><h3>Today’s timeline</h3><button id="clearRoutineLog">Clear today</button></div>
-            <div class="routine-timeline" id="routineTimeline"></div>
-          </div>
-          <aside>
-            <div class="section-title"><h3>Routine schedule</h3><button id="editRoutineScheduleBtn">＋ Add</button></div>
-            <div class="routine-schedule" id="routineSchedule"></div>
-          </aside>
-        </div>
-
+        <div class="page-head compact"><div><p class="eyebrow">TAKING CARE OF YOUR HEALTH & LIFE</p><h1>Routine</h1></div></div>
+        <section class="health-entry-card">
+          <div class="health-entry-head"><div><h2>Daily Health Entry</h2><p>Tap any number to use the calculator or type it manually.</p></div><label>Date<input id="healthEntryDate" type="date"></label></div>
+          <div class="health-input-grid">
+            <label><span>Calories</span><div><input id="healthCalories" type="number" step="0.1" placeholder="0"><small>calories</small></div></label>
+            <label><span>Burn</span><div><input id="healthBurn" type="number" step="0.1" placeholder="0"><small>calories</small></div></label>
+            <label><span>Weight</span><div><input id="healthWeight" type="number" step="0.1" placeholder="0"><small>kgs</small></div></label>
+            <label><span>Work</span><div><input id="healthWork" type="number" step="0.1" placeholder="0"><small>hrs</small></div></label>
+            <label><span>Water</span><div><input id="healthWater" type="number" step="0.1" placeholder="0"><small>litres</small></div></label>
+            <label><span>Sleep</span><div><input id="healthSleep" type="number" step="0.1" placeholder="0"><small>hrs</small></div></label>
+          </div><button class="primary health-save" id="saveHealthEntry">Save today’s numbers</button>
+        </section>
         <div class="routine-report">
           <div class="update-head"><div><p class="eyebrow" id="routineReportEyebrow">DAILY REPORT</p><h2 id="routineReportTitle">How your day is balancing.</h2><p>Simple patterns—not pressure.</p></div><div class="update-switch"><button class="active" data-routine-report="daily">Daily</button><button data-routine-report="weekly">Weekly</button><button data-routine-report="monthly">Monthly</button></div></div>
           <div class="routine-report-grid"><div class="routine-chart" id="routineChart"></div><div class="routine-insight" id="routineInsight"></div></div>
         </div>
+        <details class="health-sheet" id="healthSheet"><summary><span>Health Data Sheet</span><small>Editable Excel-style history</small></summary><div class="health-sheet-content"><div class="health-sheet-toolbar"><strong>My Health Numbers</strong><button id="downloadHealthPdf">↓ Download PDF</button></div><div class="health-table-wrap"><table><thead><tr><th>Date</th><th>Calories</th><th>Burn</th><th>Weight</th><th>Work</th><th>Water</th><th>Sleep</th></tr></thead><tbody id="healthTableBody"></tbody></table></div></div></details>
       </section>
 
       <section class="page" id="rules">
@@ -224,6 +215,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
