@@ -12,11 +12,10 @@
       <div class="auth-brand"><div class="brand-mark">T</div><div><strong>Tide</strong><span>Your personal second brain</span></div></div>
       <button class="auth-google" id="googleSignIn"><span>G</span> Continue with Google</button>
       <div class="auth-divider"><span>or</span></div>
-      <div class="auth-tabs"><button class="active" data-auth-view="login">Sign in</button><button data-auth-view="signup">Create account</button><button data-auth-view="phone">Phone OTP</button></div>
-      <form id="localLoginForm" class="auth-form active"><h1>Welcome back</h1><p>Sign in and continue with your synchronized personal workspace.</p><label>Email<input id="loginEmail" type="email" autocomplete="email" required placeholder="you@example.com"></label><label>Password<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Your password"></label><button class="primary" type="submit">Sign in</button><button class="auth-link" type="button" id="sendLoginOtp">Email me a secure sign-in link</button></form>
-      <form id="localSignupForm" class="auth-form"><h1>Create your Tide</h1><p>We’ll send a secure link to verify your email address.</p><label>Your name<input id="signupName" autocomplete="name" required placeholder="What should Tide call you?"></label><label>Email<input id="signupEmail" type="email" autocomplete="email" required placeholder="you@example.com"></label><label>Password<input id="signupPassword" type="password" minlength="6" autocomplete="new-password" required placeholder="Minimum 6 characters"></label><label>Confirm password<input id="signupConfirm" type="password" minlength="6" autocomplete="new-password" required placeholder="Repeat password"></label><button class="primary" type="submit">Create account & send verification link</button></form>
-      <form id="phoneAuthForm" class="auth-form"><h1>Phone verification</h1><p>Receive a secure one-time code by SMS.</p><label>Phone number<input id="phoneNumber" type="tel" autocomplete="tel" placeholder="+91 98765 43210"></label><button class="primary" type="submit">Send SMS code</button><div class="auth-otp-block" id="phoneOtpBlock"><label>SMS verification code<input id="phoneOtpCode" inputmode="numeric" maxlength="8" placeholder="Enter SMS code"></label><button class="primary" type="button" id="verifyPhoneOtp">Verify phone</button></div></form>
-      <div class="auth-message" id="authMessage"></div><small class="auth-warning">Secure authentication by Supabase. Every verified account receives a separate, empty Tide workspace.</small>
+      <div class="auth-tabs"><button class="active" data-auth-view="login">Sign in</button><button data-auth-view="signup">Create account</button></div>
+      <form id="localLoginForm" class="auth-form active"><h1>Welcome back</h1><p>Sign in and continue with your synchronized personal workspace.</p><label>Email<input id="loginEmail" type="email" autocomplete="email" required placeholder="you@example.com"></label><label>Password<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Your password"></label><button class="primary" type="submit">Sign in</button><button class="auth-link" type="button" id="forgotPassword">Forgot password?</button></form>
+      <form id="localSignupForm" class="auth-form"><h1>Create your Tide</h1><p>Create an account, then verify your email from the link Firebase sends.</p><label>Your name<input id="signupName" autocomplete="name" required placeholder="What should Tide call you?"></label><label>Email<input id="signupEmail" type="email" autocomplete="email" required placeholder="you@example.com"></label><label>Password<input id="signupPassword" type="password" minlength="6" autocomplete="new-password" required placeholder="Minimum 6 characters"></label><label>Confirm password<input id="signupConfirm" type="password" minlength="6" autocomplete="new-password" required placeholder="Repeat password"></label><button class="primary" type="submit">Create account</button></form>
+      <div class="auth-message" id="authMessage"></div><small class="auth-warning">Secure authentication and private synchronization by Firebase.</small>
     </div>
   </div>
   <div class="app-shell">
@@ -235,6 +234,9 @@
   </div>
   <div class="modal" id="modal"><div class="modal-card"><button type="button" class="modal-close" id="modalClose" aria-label="Close" onclick="window.forceCloseModal && window.forceCloseModal(event)">×</button><div id="modalBody"></div></div></div>
   <div class="toast" id="toast">Saved to your brain dump</div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
