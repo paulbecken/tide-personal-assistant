@@ -16,11 +16,12 @@
       <div class="auth-message" id="authMessage"></div><small class="auth-warning">Protected by Firebase Authentication. Your Tide data remains private to your account.</small>
     </div>
   </div>
+  <div class="app-install-popup" id="appInstallPopup"><button id="appInstallClose">×</button><div class="app-install-icon">T</div><div><strong>Get the Tide Android app</strong><span>Install the private APK directly—Tide is not listed on Google Play yet.</span></div><a href="downloads/Tide-BulkCapture-v0.3.1.apk" download>Download app</a></div>
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand"><div class="brand-mark">T</div><div><strong>Tide</strong><span>your second brain</span></div></div>
       <nav id="nav">
-        <button class="nav-item active" data-tab="today"><span>⌂</span> Today</button>
+        <button class="nav-item active" data-tab="today"><span>⌂</span> Tasks</button>
         <button class="nav-item" data-tab="routine"><span>◌</span> Routine</button>
         <button class="nav-item" data-tab="rules"><span>◎</span> My Rules</button>
         <button class="nav-item" data-tab="settings"><span>⚙</span> Settings</button>
@@ -48,17 +49,12 @@
           <div class="hero-actions"><button class="focus-mode-btn" id="focusModeBtn" title="Start focus mode">▶</button><button class="queue-peek" id="openQueueBtn">☷ Open list</button></div>
           <span class="swipe-hint">Swipe task →</span>
         </div>
-        <div class="today-action-grid category-dashboard">
-          <div class="today-action-card meeting" data-open-category="meetings"><button class="category-add" id="quickAddMeeting" aria-label="Add meeting" title="Add meeting">＋</button><span class="today-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/><circle cx="9" cy="15" r="2"/><path d="M13 17c.5-1.5 1.5-2.3 3-2.3 1.4 0 2.5.8 3 2.3"/></svg></span><div><small>Meeting</small><strong id="todayMeetingTitle">Content strategy review</strong><p id="todayMeetingMeta">12:30 PM · Cafe Monsoon</p></div><div class="category-progress-row"><div class="category-progress"><i id="meetingProgress"></i></div><span id="meetingProgressCount">0/0</span></div></div>
-          <div class="today-action-card reminder" data-open-category="reminders"><button class="category-add" id="quickAddReminder" aria-label="Add reminder" title="Add reminder">＋</button><span class="today-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></span><div><small>Reminder</small><strong id="todayReminderTitle">BMC Ward Office visit</strong><p id="todayReminderMeta">2:15 PM · File PL-284</p></div><div class="category-progress-row"><div class="category-progress"><i id="reminderProgress"></i></div><span id="reminderProgressCount">0/0</span></div></div>
-          <div class="today-action-card followup" data-open-category="followups"><button class="category-add" id="quickAddFollowup" aria-label="Add follow-up" title="Add follow-up">＋</button><span class="today-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 4H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3"/><path d="M13 3h8v8M21 3l-9 9"/></svg></span><div><small>Follow-up</small><strong id="todayFollowupTitle">Call Rohan about proposal</strong><p id="todayFollowupMeta">10:30 AM · Buzz Media Fame</p></div><div class="category-progress-row"><div class="category-progress"><i id="followupProgress"></i></div><span id="followupProgressCount">0/0</span></div></div>
-          <div class="today-action-card task" data-open-category="tasks"><button class="category-add" id="quickAddTask" aria-label="Add task" title="Add task">＋</button><span class="today-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6h14M5 12h14M5 18h9"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span><div><small>Task</small><strong id="todayTaskTitle">General work</strong><p id="todayTaskMeta">Your remaining actions</p></div><div class="category-progress-row"><div class="category-progress"><i id="taskProgress"></i></div><span id="taskProgressCount">0/0</span></div></div>
-        </div>
+        <div class="today-action-grid category-dashboard" id="categoryDashboard"></div>
 
-        <section class="bulk-capture-card">
-          <div class="bulk-capture-head"><div><p class="eyebrow">AI TASK ORGANISER</p><h2>Bulk Task Capture</h2><span>Write or record everything. Tide will separate and classify it.</span></div><button id="generateBulkTasks">Generate multiple tasks →</button></div>
-          <div class="bulk-compose"><textarea id="bulkCaptureText" placeholder="Example: Call Rahul tomorrow at 11. Also schedule gym at 7, remind me to carry the BMC file, and follow up with Neha on Friday."></textarea><button class="bulk-generate-icon" id="bulkGenerateIcon" title="Generate tasks">＋</button></div>
-          <div class="bulk-audio-row"><button class="bulk-record" id="bulkRecordBtn"><span>●</span><b>Record</b></button><div class="bulk-recording" id="bulkRecording"><button id="bulkPauseBtn">Ⅱ</button><span id="bulkRecordTimer">00:00</span><audio id="bulkAudioPlayer" controls></audio><button id="bulkSendAudio">➤</button></div><small id="bulkAudioStatus">WhatsApp-style voice capture for bulk tasks</small></div>
+        <section class="bulk-capture-card" id="bulkCaptureCard">
+          <div class="bulk-capture-head"><button class="bulk-collapse" id="bulkCollapseToggle"><b>⌃</b><div><p class="eyebrow">AI TASK ORGANISER</p><h2>Bulk Task Capture</h2><span>Write or record everything. Tide will separate and classify it.</span></div></button></div>
+          <div class="bulk-capture-body"><div class="bulk-compose"><textarea id="bulkCaptureText" placeholder="Example: Call Rahul tomorrow at 11. Also schedule gym at 7, remind me to carry the BMC file, and follow up with Neha on Friday."></textarea><button class="bulk-generate-icon" id="bulkGenerateIcon" title="Send and generate tasks">➤</button></div>
+          <div class="bulk-audio-row"><button class="bulk-record" id="bulkRecordBtn"><span>●</span><b>Record</b></button><div class="bulk-recording" id="bulkRecording"><button id="bulkPauseBtn">Ⅱ</button><span id="bulkRecordTimer">00:00</span><audio id="bulkAudioPlayer" controls></audio><button id="bulkSendAudio">■</button></div><small id="bulkAudioStatus">Record · pause · play · stop</small></div></div>
         </section>
 
         <div class="month-feed-card" id="planningDashboard">
@@ -140,23 +136,24 @@
       </section>
 
       <section class="page" id="routine">
-        <div class="page-head compact"><div><p class="eyebrow">TAKING CARE OF YOUR HEALTH & LIFE</p><h1>Routine</h1></div></div>
+        <div class="page-head compact"><div><p class="eyebrow">TAKING CARE OF YOUR HEALTH & LIFE</p><h1>Daily <span>Routine Tracker</span></h1></div></div>
         <section class="health-entry-card">
-          <div class="health-entry-head"><div><h2>Daily Health Entry</h2><p>Tap any number to use the calculator or type it manually.</p></div><label>Date<input id="healthEntryDate" type="date"></label></div>
+          <div class="health-entry-head"><div><h2>Daily Health Entry</h2><p>Six simple numbers for your day.</p></div><div class="health-entry-actions"><button id="openHealthCalculator">Calculator</button><label><span class="theme-calendar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></span><input id="healthEntryDate" type="date"></label></div></div>
           <div class="health-input-grid">
-            <label><span>Calories</span><div><input id="healthCalories" type="number" step="0.1" placeholder="0"><small>calories</small></div></label>
-            <label><span>Burn</span><div><input id="healthBurn" type="number" step="0.1" placeholder="0"><small>calories</small></div></label>
-            <label><span>Weight</span><div><input id="healthWeight" type="number" step="0.1" placeholder="0"><small>kgs</small></div></label>
-            <label><span>Work</span><div><input id="healthWork" type="number" step="0.1" placeholder="0"><small>hrs</small></div></label>
-            <label><span>Water</span><div><input id="healthWater" type="number" step="0.1" placeholder="0"><small>litres</small></div></label>
-            <label><span>Sleep</span><div><input id="healthSleep" type="number" step="0.1" placeholder="0"><small>hrs</small></div></label>
+            <label><span>🥗 Calories</span><div><input id="healthCalories" type="number" step="0.1" placeholder="0"><small>cal</small></div></label>
+            <label><span>♨️ Burn</span><div><input id="healthBurn" type="number" step="0.1" placeholder="0"><small>cal</small></div></label>
+            <label><span>⚖️ Weight</span><div><input id="healthWeight" type="number" step="0.1" placeholder="0"><small>kg</small></div></label>
+            <label><span>💧 Water</span><div><input id="healthWater" type="number" step="0.1" placeholder="0"><small>L</small></div></label>
+            <label><span>💻 Work</span><div><input id="healthWork" type="number" step="0.1" placeholder="0"><small>hrs</small></div></label>
+            <label><span>💤 Sleep</span><div><input id="healthSleep" type="number" step="0.1" placeholder="0"><small>hrs</small></div></label>
           </div><button class="primary health-save" id="saveHealthEntry">Save today’s numbers</button>
         </section>
+        <details class="health-sheet" id="healthSheet"><summary><span>Health Data Sheet</span><small>Editable Excel-style history</small></summary><div class="health-sheet-content"><div class="health-sheet-toolbar"><strong>My Health Numbers</strong><button id="downloadHealthPdf">↓ Download PDF</button></div><div class="health-table-wrap"><table><thead><tr><th>📅 Date</th><th>🥗 Calories</th><th>♨️ Burn</th><th>⚖️ Weight</th><th>💧 Water</th><th>💻 Work</th><th>💤 Sleep</th></tr></thead><tbody id="healthTableBody"></tbody></table></div></div></details>
         <div class="routine-report">
-          <div class="update-head"><div><p class="eyebrow" id="routineReportEyebrow">DAILY REPORT</p><h2 id="routineReportTitle">How your day is balancing.</h2><p>Simple patterns—not pressure.</p></div><div class="update-switch"><button class="active" data-routine-report="daily">Daily</button><button data-routine-report="weekly">Weekly</button><button data-routine-report="monthly">Monthly</button></div></div>
+          <div class="update-head"><div><p class="eyebrow" id="routineReportEyebrow">DAILY REPORT</p><h2 id="routineReportTitle">How your day is balancing.</h2></div><div class="update-switch"><button class="active" data-routine-report="daily">Daily</button><button data-routine-report="weekly">Weekly</button><button data-routine-report="monthly">Monthly</button></div></div>
           <div class="routine-report-grid"><div class="routine-chart" id="routineChart"></div><div class="routine-insight" id="routineInsight"></div></div>
         </div>
-        <details class="health-sheet" id="healthSheet"><summary><span>Health Data Sheet</span><small>Editable Excel-style history</small></summary><div class="health-sheet-content"><div class="health-sheet-toolbar"><strong>My Health Numbers</strong><button id="downloadHealthPdf">↓ Download PDF</button></div><div class="health-table-wrap"><table><thead><tr><th>Date</th><th>Calories</th><th>Burn</th><th>Weight</th><th>Work</th><th>Water</th><th>Sleep</th></tr></thead><tbody id="healthTableBody"></tbody></table></div></div></details>
+
       </section>
 
       <section class="page" id="rules">
@@ -170,13 +167,14 @@
           <div class="settings-card"><div class="settings-card-head"><span>♙</span><div><h3>Your profile</h3><p>The assistant uses this to speak to you personally.</p></div></div><div class="form-field"><label>YOUR NAME</label><input id="settingsUserName" placeholder="What should Tide call you?"></div><div class="form-field"><label>ASSISTANT NAME</label><input id="settingsAssistantName" placeholder="e.g. Tara"></div><button class="primary" id="saveProfileSettings">Save profile</button></div>
           <div class="settings-card"><div class="settings-card-head"><span>◉</span><div><h3>Voice assistant</h3><p>Choose how your personal assistant speaks and interacts.</p></div></div><div class="setting-toggle-row"><div><strong>Voice assistant</strong><small>Read briefings and completion updates aloud</small></div><button class="toggle" id="settingsAssistantEnabled"><i></i></button></div><div class="setting-toggle-row"><div><strong>Speak when a task is completed</strong><small>Hear the next recommended action</small></div><button class="toggle" id="settingsSpeakCompletion"><i></i></button></div><div class="form-field"><label>PREFERRED VOICE</label><select id="settingsVoiceSelect"><option value="">Best available feminine voice</option></select><small class="exact-voice-note">Selected personality voice: Soft British Voice 5A. Dynamic details remain visible as text.</small></div><button class="soft-btn" id="testAssistantVoice">Test selected voice</button></div>
           <div class="settings-card"><div class="settings-card-head"><span>☀</span><div><h3>Daily briefing</h3><p>A quick spoken summary based on your saved data.</p></div></div><div class="setting-toggle-row"><div><strong>Morning briefing</strong><small>Tasks, meetings, reminders and follow-ups</small></div><button class="toggle" id="settingsMorningBrief"><i></i></button></div><div class="form-field"><label>BRIEFING TIME</label><input id="settingsBriefTime" type="time" value="08:30"></div><button class="soft-btn" id="readBriefingNow">Read my briefing now</button></div>
+          <div class="settings-card task-types-card"><div class="settings-card-head"><span>☷</span><div><h3>Task sections</h3><p>Rename, add or remove the sections used across Tide.</p></div></div><div class="task-type-list" id="taskTypeList"></div><button class="soft-btn" id="addTaskTypeBtn">＋ Add section</button></div>
           <div class="settings-card privacy-card"><div class="settings-card-head"><span>◇</span><div><h3>Personal data</h3><p>This prototype keeps your profile and tasks privately in this app/browser.</p></div></div><div class="summary-box"><strong>Individual profile</strong><br>Your assistant reads only the tasks, meetings, routine logs, rules and follow-ups saved in this Tide installation.</div><button class="danger-outline" id="localLogoutBtn">Sign out</button></div>
         </div>
       </section>
     </main>
 
     <nav class="mobile-nav">
-      <button class="active" data-tab="today">⌂<span>Today</span></button><button data-tab="routine">◌<span>Routine</span></button><button data-tab="rules">◎<span>My Rules</span></button><button data-tab="settings">⚙<span>Settings</span></button>
+      <button class="active" data-tab="today">⌂<span>Tasks</span></button><button data-tab="routine">◌<span>Routine</span></button><button data-tab="rules">◎<span>My Rules</span></button><button data-tab="settings">⚙<span>Settings</span></button>
     </nav>
   </div>
 
@@ -212,10 +210,9 @@
   </div>
   <div class="modal" id="modal"><div class="modal-card"><button type="button" class="modal-close" id="modalClose" aria-label="Close" onclick="window.forceCloseModal && window.forceCloseModal(event)">×</button><div id="modalBody"></div></div></div>
   <div class="toast" id="toast">Saved to your brain dump</div>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+  <script src="vendor/firebase-app-compat.js"></script>
+  <script src="vendor/firebase-auth-compat.js"></script>
+  <script src="vendor/firebase-firestore-compat.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
