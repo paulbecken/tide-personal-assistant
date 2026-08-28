@@ -149,10 +149,7 @@
           </div><button class="primary health-save" id="saveHealthEntry">Save today’s data</button>
         </section>
         <details class="health-sheet" id="healthSheet"><summary><span>Health Data Sheet</span><small>Editable Excel-style history</small></summary><div class="health-sheet-content"><div class="health-sheet-toolbar"><strong>My Health Tracker</strong><button id="downloadHealthPdf">↓ Download PDF</button></div><div class="health-table-wrap"><table><thead><tr><th>📅 Date</th><th>🥗 Calories</th><th>♨️ Burn</th><th>⚖️ Weight</th><th>💧 Water</th><th>💻 Work</th><th>💤 Sleep</th></tr></thead><tbody id="healthTableBody"></tbody></table></div></div></details>
-        <details class="routine-report" id="routineReport" open>
-          <summary class="update-head"><div><p class="eyebrow" id="routineReportEyebrow">DAILY REPORT</p><h2 id="routineReportTitle">How your day is balancing.</h2></div><div class="update-switch"><button class="active" data-routine-report="daily">Daily</button><button data-routine-report="weekly">Weekly</button><button data-routine-report="monthly">Monthly</button></div></summary>
-          <div class="routine-report-grid"><div class="routine-chart" id="routineChart"></div><div class="routine-insight" id="routineInsight"></div></div>
-        </details>
+        <details class="routine-report" id="routineReport"><summary><span>Daily Health Report</span><small>View your balance</small></summary><div class="routine-report-content"><span id="routineReportEyebrow" hidden>DAILY REPORT</span><h2 id="routineReportTitle" hidden>Daily Health Report</h2><div class="update-switch report-switch"><button class="active" data-routine-report="daily">Daily</button><button data-routine-report="weekly">Weekly</button><button data-routine-report="monthly">Monthly</button></div><div class="routine-report-grid"><div class="routine-chart" id="routineChart"></div><div class="routine-insight" id="routineInsight"></div></div></div></details>
 
       </section>
 
